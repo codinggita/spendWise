@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/Stack-MERN-orange" alt="Stack">
 </p>
 
-> **SpendWise** is an AI-powered unified expense tracker built specifically for India. It aggregates financial transactions from multiple sources (UPI, cards, wallets) and translates cryptic bank narratives into plain, human-readable language using OpenAI.
+> **SpendWise** is an AI-powered unified expense tracker built specifically for India. It aggregates financial transactions from multiple sources (UPI, cards, wallets) and translates cryptic bank narratives into plain, human-readable language.
 
 ---
 
@@ -29,7 +29,7 @@
 
 ### Core Functionality
 - **Unified Transaction Tracking** - Connect all your Indian financial accounts in one place
-- **AI-Powered Translation** - OpenAI transforms cryptic bank codes like `UPI/123@YBL/SWIGGY` into plain language like "Swiggy dinner order via PhonePe"
+- **AI-Powered Translation** - AI transforms cryptic bank codes like `UPI/123@YBL/SWIGGY` into plain language like "Swiggy dinner order via PhonePe"
 - **CSV Import** - Upload bank statements from 40+ Indian banks
 - **Smart Analytics** - Monthly spending trends, category breakdowns, budget alerts
 
@@ -65,7 +65,7 @@
 | Winston | Logging |
 
 ### Integrations
-- **OpenAI GPT-4o** - AI transaction translation
+- **AI** - AI transaction translation
 - **Cloudinary** - File storage for CSV statements
 - **Google OAuth** - Social authentication
 
