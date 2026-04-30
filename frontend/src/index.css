@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;800;900&family=Public+Sans:wght@400;500;700&family=JetBrains+Mono:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #131313;
+    --foreground: #e5e2e1;
+    --surface: #201f1f;
+    --surface-low: #1c1b1b;
+    --surface-high: #2a2a2a;
+    --surface-highest: #353534;
+    --card: #1c1b1b;
+    --card-foreground: #e5e2e1;
+    --popover: #201f1f;
+    --popover-foreground: #e5e2e1;
+    --primary: #ddb7ff;
+    --primary-foreground: #490080;
+    --primary-container: #b76dff;
+    --secondary: #4cd7f6;
+    --secondary-foreground: #003640;
+    --secondary-container: #03b5d3;
+    --tertiary: #e2c62d;
+    --tertiary-foreground: #393000;
+    --tertiary-container: #c4ab01;
+    --muted: #353534;
+    --muted-foreground: #cfc2d6;
+    --accent: #ddb7ff;
+    --accent-foreground: #490080;
+    --destructive: #ffb4ab;
+    --destructive-foreground: #690005;
+    --border: #000000;
+    --input: #1c1b1b;
+    --ring: #ddb7ff;
+    --radius: 0px;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-black;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-[#131313] text-[#e5e2e1];
+    font-family: 'Public Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lexend', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .neo-shadow {
+    box-shadow: 8px 8px 0px 0px #000000;
+  }
+  .neo-shadow-sm {
+    box-shadow: 4px 4px 0px 0px #000000;
+  }
+  .neo-border {
+    border: 4px solid #000000;
+  }
+  .neo-border-sm {
+    border: 2px solid #000000;
+  }
+  .neo-btn {
+    @apply font-['Lexend'] font-bold uppercase tracking-wide text-sm px-6 py-3 border-2 border-black transition-all duration-75 cursor-pointer;
+    box-shadow: 4px 4px 0px 0px #000000;
+  }
+  .neo-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px 0px #000000;
+  }
+  .neo-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+  }
+  .neo-card {
+    @apply bg-[#1c1b1b] border-4 border-black p-6;
+    box-shadow: 8px 8px 0px 0px #000000;
+  }
+  .neo-card-sm {
+    @apply bg-[#1c1b1b] border-2 border-black p-4;
+    box-shadow: 4px 4px 0px 0px #000000;
+  }
+  .neo-input {
+    @apply bg-[#131313] border-2 border-black text-[#e5e2e1] px-4 py-3 font-['Public_Sans'] placeholder:text-[#cfc2d6]/50 focus:outline-none focus:border-[#e2c62d] transition-colors;
+  }
+  .neo-nav-item {
+    @apply flex items-center gap-3 p-3 border-2 border-black font-['Lexend'] uppercase font-bold text-sm transition-all duration-75 cursor-pointer;
+    box-shadow: 4px 4px 0px 0px #000000;
+  }
+  .neo-nav-item:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px 0px #000000;
+  }
+  .neo-nav-item-active {
+    @apply bg-[#ddb7ff] text-black shadow-none translate-x-1 translate-y-1;
+  }
+}
+
+@layer utilities {
+  .font-headline-xl {
+    font-family: 'Lexend', sans-serif;
+    font-size: 48px;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .font-headline-lg {
+    font-family: 'Lexend', sans-serif;
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+  .font-headline-md {
+    font-family: 'Lexend', sans-serif;
+    font-size: 24px;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+  .font-body-lg {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+  .font-body-md {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+  .font-label-bold {
+    font-family: 'Lexend', sans-serif;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 700;
+  }
+  .font-mono-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+}
