@@ -1,6 +1,6 @@
 # SpendWise
 
-AI-powered expense tracker for India — aggregates transactions from UPI, cards, and wallets with intelligent categorization.
+A modern financial transaction management application — track expenses, analyze spending patterns, and manage transactions with ease.
 
 ---
 
@@ -10,20 +10,37 @@ AI-powered expense tracker for India — aggregates transactions from UPI, cards
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Quick Start](#quick-start)
-- [API Reference](#api-reference)
-- [Design System](#design-system)
-- [Security](#security)
+- [Usage Guide](#usage-guide)
 - [License](#license)
 
 ---
 
 ## Features
 
-- **Unified Tracking** — Connect all Indian financial accounts in one dashboard
-- **AI Summarization** — Translates cryptic bank codes into plain descriptions (e.g., `UPI/123@YBL/SWIGGY` becomes "Swiggy dinner via PhonePe")
-- **CSV Import** — Bulk upload bank statements from 40+ Indian banks
-- **Analytics** — Monthly trends, category breakdowns, spending insights
-- **Multi-source Support** — UPI, credit/debit cards, digital wallets, bank accounts
+### Authentication & User Management
+- **Secure Authentication** — Login and registration with JWT-based auth
+- **Protected Routes** — Automatic redirect to login for unauthorized access
+- **Persistent Sessions** — Stay logged in across browser sessions
+
+### Transaction Management
+- **Add Transactions** — Manually add income or expense transactions
+- **Edit & Delete** — Modify or remove existing transactions
+- **Transaction Feed** — View all transactions with card-based layout
+- **CSV Import** — Bulk upload transactions from CSV files
+- **Filtering** — Filter transactions by type, category, or date
+- **Pagination** — Navigate through transaction history efficiently
+
+### Analytics & Insights
+- **Spending Pie Chart** — Visual breakdown of expenses by category
+- **Monthly Trends** — Track spending patterns over time
+- **Dashboard** — Centralized view of financial analytics
+
+### User Experience
+- **Dark/Light Theme** — Toggle between themes with ThemeContext
+- **Responsive Design** — Works on desktop and mobile devices
+- **Loading States** — Skeleton loaders and animations for smooth UX
+- **Toast Notifications** — Real-time feedback for user actions
+- **Error Boundary** — Graceful error handling with fallback UI
 
 ---
 
@@ -35,31 +52,18 @@ AI-powered expense tracker for India — aggregates transactions from UPI, cards
 |------------|---------|
 | React 18 | UI framework |
 | TypeScript | Type safety |
-| Vite | Build tool |
-| Tailwind CSS | Styling |
+| Vite | Build tool & dev server |
+| Tailwind CSS | Utility-first styling |
 | Redux Toolkit | State management |
-| TanStack Query | Server state |
-| React Router | Navigation |
-| Radix UI | Accessible components |
+| React Router DOM | Client-side routing |
+| Radix UI | Accessible component primitives |
 | Recharts | Data visualization |
 | Framer Motion | Animations |
-| Lottie | Micro-interactions |
-| Lucide React | Icons |
-
-### Backend
-
-| Technology | Purpose |
-|------------|---------|
-| Node.js | Runtime |
-| Express 5 | Web framework |
-| MongoDB + Mongoose | Database & ODM |
-| Zod | Schema validation |
-| Winston | Structured logging |
-
-### Integrations
-
-- Google OAuth
-- Cloudinary (file storage)
+| Lottie React | Micro-interactions |
+| Lucide React | Icon library |
+| Formik / React Hook Form | Form handling |
+| Yup / Zod | Form validation |
+| Axios | HTTP client |
 
 ---
 
@@ -67,44 +71,63 @@ AI-powered expense tracker for India — aggregates transactions from UPI, cards
 
 ```
 SpendWise/
-|-- backend/
-|   |-- src/
-|   |   |-- config/         # Environment & app configuration
-|   |   |-- controllers/    # Request handlers
-|   |   |-- middleware/     # Auth, validation, rate limiting
-|   |   |-- models/         # Mongoose schemas (User, Transaction)
-|   |   |-- routes/         # API route definitions
-|   |   |-- services/       # Business logic (AI, CSV parsing)
-|   |   |-- utils/          # Helpers (logger, validators)
-|   |   |-- types/          # TypeScript type definitions
-|   |   |-- server.ts       # Application entry point
-|   |   |-- app.ts          # Express app setup
-|   |-- package.json
-|   |-- tsconfig.json
-|
-|-- frontend/
-|   |-- src/
-|   |   |-- components/      # Reusable UI components
-|   |   |   |-- ui/         # Base components (Button, Card, Input)
-|   |   |   |-- forms/      # Form components (LoginForm, TransactionForm)
-|   |   |   |-- charts/     # Visualization components
-|   |   |-- pages/          # Route page components
-|   |   |-- store/          # Redux store & slices
-|   |   |-- services/       # API client (axios)
-|   |   |-- hooks/          # Custom React hooks
-|   |   |-- lib/            # Utilities (cn, formatters)
-|   |   |-- App.tsx
-|   |   |-- main.tsx
-|   |-- index.html
-|   |-- package.json
-|   |-- vite.config.ts
-|   |-- tailwind.config.js
-|
-|-- DESIGN/                 # UI/UX mockups (Figma exports)
-|   |-- dashboard_neobrutalist/
-|   |-- landing_page_neobrutalist/
-|   |-- transaction_feed_neobrutalist/
-|
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── ui/              # shadcn/ui base components
+│   │   │   │   ├── badge.tsx
+│   │   │   │   ├── button.tsx
+│   │   │   │   ├── card.tsx
+│   │   │   │   ├── dialog.tsx
+│   │   │   │   ├── input.tsx
+│   │   │   │   ├── label.tsx
+│   │   │   │   ├── skeleton.tsx
+│   │   │   │   ├── toaster.tsx
+│   │   │   │   └── toast.tsx
+│   │   │   ├── AddTransactionModal.tsx
+│   │   │   ├── CSVUploader.tsx
+│   │   │   ├── EditTransactionModal.tsx
+│   │   │   ├── ErrorBoundary.tsx
+│   │   │   ├── Layout.tsx
+│   │   │   ├── LoadingAnimation.tsx
+│   │   │   ├── MonthlyTrendChart.tsx
+│   │   │   ├── Pagination.tsx
+│   │   │   ├── ProtectedRoute.tsx
+│   │   │   ├── SpendingPieChart.tsx
+│   │   │   ├── TransactionCard.tsx
+│   │   │   └── TransactionFilters.tsx
+│   │   ├── context/
+│   │   │   └── ThemeContext.tsx
+│   │   ├── hooks/
+│   │   │   ├── useAuth.ts
+│   │   │   └── useDebounce.ts
+│   │   ├── lib/
+│   │   │   └── utils.ts
+│   │   ├── pages/
+│   │   │   ├── DashboardPage.tsx
+│   │   │   ├── LandingPage.tsx
+│   │   │   ├── LoginPage.tsx
+│   │   │   ├── RegisterPage.tsx
+│   │   │   ├── SettingsPage.tsx
+│   │   │   └── TransactionFeedPage.tsx
+│   │   ├── services/
+│   │   │   └── api.ts
+│   │   ├── store/
+│   │   │   ├── index.ts
+│   │   │   └── slices/
+│   │   │       ├── authSlice.ts
+│   │   │       ├── transactionSlice.ts
+│   │   │       └── uiSlice.ts
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── public/
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── tailwind.config.js
+│   ├── tsconfig.json
+│   └── Dockerfile
+└── README.md
 ```
 
 ---
@@ -114,26 +137,8 @@ SpendWise/
 ### Prerequisites
 
 - Node.js >= 18
-- MongoDB (local or Atlas)
 - npm or pnpm
-
-### Backend Setup
-
-```bash
-cd backend
-
-# Install dependencies
-npm install
-
-# Configure environment
-cp .env.example .env
-# Edit .env with your MongoDB URI, OpenAI key, etc.
-
-# Start development server
-npm run dev
-```
-
-Backend runs at `http://localhost:3000`
+- Backend API running (for full functionality)
 
 ### Frontend Setup
 
@@ -149,98 +154,86 @@ npm run dev
 
 Frontend runs at `http://localhost:5173`
 
-### Environment Variables
+### Build for Production
 
-**Backend (.env)**
+```bash
+cd frontend
 
-```env
-PORT=3000
-MONGODB_URI=mongodb://localhost:27017/spendwise
-JWT_SECRET=your-secret-key
-JWT_EXPIRES_IN=7d
-CLIENT_URL=http://localhost:5173
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-secret
-CLOUDINARY_CLOUD_NAME=your-cloud-name
-CLOUDINARY_API_KEY=your-api-key
-CLOUDINARY_API_SECRET=your-api-secret
+# Build the application
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+### Docker Deployment
+
+```bash
+cd frontend
+
+# Build Docker image
+docker build -t spendwise-frontend .
+
+# Run container
+docker run -p 80:80 spendwise-frontend
 ```
 
 ---
 
-## API Reference
+## Usage Guide
 
 ### Authentication
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Create new account |
-| POST | `/api/auth/login` | Login with credentials |
-| POST | `/api/auth/google` | Google OAuth login |
-| POST | `/api/auth/logout` | Clear session |
-| GET | `/api/auth/me` | Get current user |
+1. Navigate to the landing page at `/`
+2. Click "Login" or "Register" to access the auth pages
+3. After successful authentication, you'll be redirected to the dashboard
 
-### Transactions
+### Managing Transactions
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/transactions` | List user transactions |
-| POST | `/api/transactions` | Create transaction |
-| GET | `/api/transactions/:id` | Get transaction details |
-| PATCH | `/api/transactions/:id` | Update transaction |
-| DELETE | `/api/transactions/:id` | Delete transaction |
-| POST | `/api/transactions/upload-csv` | Bulk import from CSV |
+**Adding a Transaction:**
+1. Navigate to `/feed` (Transaction Feed)
+2. Click "Add Transaction" button
+3. Fill in the transaction details (type, amount, category, description)
+4. Submit to save
 
-### Analytics
+**Editing a Transaction:**
+1. Find the transaction in the feed
+2. Click the edit icon on the transaction card
+3. Modify the details in the modal
+4. Save changes
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/analytics/spending-by-category` | Spending breakdown by category |
-| GET | `/api/analytics/monthly-trend` | Monthly spending trend |
+**Deleting a Transaction:**
+1. Find the transaction in the feed
+2. Click the delete icon
+3. Confirm the deletion
 
----
+**Importing CSV:**
+1. Navigate to the Transaction Feed
+2. Use the CSV Upload component
+3. Select a CSV file with transaction data
+4. The system will bulk import all valid transactions
 
-## Design System
+### Analytics Dashboard
 
-### Color Palette
+Navigate to `/analytics` to view:
+- **Spending Pie Chart** — Breakdown of expenses by category
+- **Monthly Trend Chart** — Spending patterns over time
 
-| Token | Hex | Usage |
-|-------|-----|-------|
-| Primary | `#F59E0B` | CTAs, highlights (Amber) |
-| Accent | `#8B5CF6` | Secondary actions (Violet) |
-| Background | `#0F172A` | App background (Slate-950) |
-| Surface | `#1E293B` | Cards, panels (Slate-800) |
-| Border | `#334155` | Dividers, outlines (Slate-700) |
-| Text Primary | `#FFFFFF` | Headings |
-| Text Secondary | `#CBD5E1` | Body text (Slate-300) |
+### Settings
 
-### Typography
+Navigate to `/settings` to:
+- Toggle between dark and light theme
+- Manage account preferences
+- View account information
 
-- **Font**: IBM Plex Sans
-- **Weights**: 400 (body), 500 (medium), 600 (semibold), 700 (headings)
-- **Icons**: Lucide React (2px stroke, outline style)
+### Theme Switching
 
-### Components
-
-- **Border Radius**: 12px (cards), 8px (buttons), 6px (inputs)
-- **Shadows**: Subtle glow on primary elements
-- **Backdrop**: Blur effect on navigation
-
----
-
-## Security
-
-| Layer | Implementation |
-|-------|----------------|
-| Auth | JWT in httpOnly cookies, bcrypt password hashing (cost factor 12) |
-| Input | Zod validation, mongo-sanitize for NoSQL injection prevention |
-| Headers | Helmet.js security headers |
-| CORS | Configured for frontend origin only |
-| Rate Limiting | express-rate-limit on auth endpoints |
-| Logging | Winston structured JSON logs |
+Click the theme toggle in the layout header to switch between:
+- ☀️ Light mode
+- 🌙 Dark mode
 
 ---
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+MIT License - see LICENSE file for details.
