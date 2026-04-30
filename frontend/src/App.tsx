@@ -47,7 +47,6 @@ const AppContent = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/analytics" element={<DashboardPage />} />
         {/* Protected Routes */}
         <Route
           element={
@@ -56,6 +55,7 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         >
+          <Route path="/analytics" element={<DashboardPage />} />
           <Route path="/feed" element={<TransactionFeedPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           {/* Redirect from root-like protected access */}
