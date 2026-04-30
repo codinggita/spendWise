@@ -22,9 +22,23 @@ interface DashboardSummary {
   averageTransaction: number;
 }
 
+interface SourceData {
+  _id: string;
+  total: number;
+  count: number;
+}
+
+interface MerchantData {
+  _id: string;
+  total: number;
+  count: number;
+}
+
 export const DashboardPage = () => {
   const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
   const [trendData, setTrendData] = useState<TrendData[]>([]);
+  const [sourceData, setSourceData] = useState<SourceData[]>([]);
+  const [merchantData, setMerchantData] = useState<MerchantData[]>([]);
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,14 +48,26 @@ export const DashboardPage = () => {
       setLoading(true);
       setError(null);
       try {
-        const [dashboardRes, categoriesRes, trendRes] = await Promise.all([
+        const [dashboardRes, categoriesRes, trendRes, sourcesRes, merchantsRes] = await Promise.all([
           api.get('/analytics/dashboard'),
           api.get('/analytics/categories'),
           api.get('/analytics/monthly-trend'),
+          api.get('/analytics/sources'),
+          api.get('/analytics/top-merchants'),
         ]);
         setSummary(dashboardRes.data.data);
         setCategoryData(categoriesRes.data.data || []);
         setTrendData(trendRes.data.data || []);
+        setSourceData((sourcesRes.data.data || []).map((s: any) => ({
+          _id: s.source,
+          total: s.total,
+          count: s.count
+        })));
+        setMerchantData((merchantsRes.data.data || []).map((m: any) => ({
+          _id: m.merchant,
+          total: m.total,
+          count: m.count
+        })));
       } catch (err: any) {
         setError(err.response?.data?.message || 'Failed to load analytics');
       } finally {
@@ -150,6 +176,46 @@ export const DashboardPage = () => {
         ) : (
           <p className="text-slate-400 text-center py-8">Not enough data for trends yet</p>
         )}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 sm:p-6">
+          <h2 className="text-base sm:text-lg font-semibold text-white mb-4">Spending by Source</h2>
+          {sourceData.length > 0 ? (
+            <SpendingPieChart data={sourceData} />
+          ) : (
+            <p className="text-slate-400 text-center py-8">No source data available</p>
+          )}
+        </div>
+
+        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 sm:p-6">
+          <h2 className="text-base sm:text-lg font-semibold text-white mb-4">Top Merchants</h2>
+          <div className="space-y-4">
+            {merchantData.length > 0 ? (
+              merchantData.slice(0, 5).map((item) => {
+                const percentage = totalSpent > 0 ? (Math.abs(item.total) / Math.abs(totalSpent)) * 100 : 0;
+                return (
+                  <div key={item._id} className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-white truncate max-w-[150px]">{item._id}</span>
+                      <span className="font-bold text-amber-500">
+                        {formatAmount(Math.abs(item.total))}
+                      </span>
+                    </div>
+                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-blue-500 transition-all"
+                        style={{ width: `${Math.min(100, percentage)}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <p className="text-slate-400 text-center py-8">No merchant data yet</p>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 sm:p-6">

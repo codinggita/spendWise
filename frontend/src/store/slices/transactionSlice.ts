@@ -92,7 +92,7 @@ export const updateTransaction = createAsyncThunk(
     };
   }, { rejectWithValue }) => {
     try {
-      const response = await api.put(`/transactions/${id}`, data);
+      const response = await api.patch(`/transactions/${id}`, data);
       return response.data.data.transaction;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to update transaction');
