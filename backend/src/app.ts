@@ -2,7 +2,6 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import rateLimit from 'express-rate-limit';
 import { sanitizeObject } from './utils/sanitize';
 import morgan from 'morgan';
 import env from './config/env';
@@ -71,26 +70,6 @@ app.use(
     { stream: { write: (message: string) => logger.info(message.trim()) } }
   )
 );
-
-const globalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 200,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { success: false, message: 'Too many requests, please try again later.' },
-});
-
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 20, // 20 requests per 15 minutes for auth
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { success: false, message: 'Too many login attempts, please try again later.' },
-});
-
-app.use(globalLimiter);
-app.use('/api/auth/login', authLimiter);
-app.use('/api/auth/register', authLimiter);
 
 app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);

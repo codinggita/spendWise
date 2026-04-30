@@ -29,7 +29,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <LoadingSpinner />;
   }
 
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  // Redirect to landing page if not authenticated instead of /login
+  // This ensures the landing page is the default view for all unauthenticated access
+  if (!isAuthenticated) return <Navigate to="/" replace />;
   return <>{children}</>;
 };
 
@@ -43,10 +45,13 @@ const AppContent = () => {
   return (
     <Suspense fallback={<LoadingSpinner />}>
       <Routes>
-        {/* Public Routes */}
+        {/* Landing page is the default view at the root URL */}
         <Route path="/" element={<LandingPage />} />
+        
+        {/* Public Auth Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        
         {/* Protected Routes */}
         <Route
           element={
@@ -58,11 +63,12 @@ const AppContent = () => {
           <Route path="/analytics" element={<DashboardPage />} />
           <Route path="/feed" element={<TransactionFeedPage />} />
           <Route path="/settings" element={<SettingsPage />} />
-          {/* Redirect from root-like protected access */}
+          
+          {/* Internal app redirect */}
           <Route path="/app" element={<Navigate to="/analytics" replace />} />
         </Route>
 
-        {/* Fallback */}
+        {/* Fallback: Any undefined route redirects to the landing page (root) */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Toaster />

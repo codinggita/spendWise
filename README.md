@@ -99,7 +99,6 @@ A modern financial transaction management application for Indian users — track
 | Helmet | 8.1.0 | Security headers |
 | CORS | 2.8.6 | Cross-origin resource sharing |
 | express-mongo-sanitize | 2.2.0 | NoSQL injection prevention |
-| express-rate-limit | 8.3.2 | Rate limiting |
 | Morgan | 1.10.1 | HTTP request logging |
 | Cookie Parser | 1.4.7 | Cookie parsing |
 | Zod | 4.3.6 | Schema validation |
@@ -538,7 +537,7 @@ User Action → Component → Redux Slice (Thunk) → API Service (Axios) → Ba
 ### Backend Architecture
 
 ```
-HTTP Request → Middleware (Helmet, CORS, Rate Limit, Mongo Sanitize) 
+HTTP Request → Middleware (Helmet, CORS, Mongo Sanitize) 
            ↓
     Auth Middleware (JWT verification) [for protected routes]
            ↓
