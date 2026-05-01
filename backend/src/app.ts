@@ -16,11 +16,26 @@ import healthRoutes from './routes/healthRoutes';
 
 const app = express();
 
+// Create an array of allowed origins and normalize them (remove trailing slashes)
+const allowedOrigins = [env.FRONTEND_URL.replace(/\/$/, '')];
+
 app.use(
   cors({
-    origin: env.FRONTEND_URL,
+    origin: (origin, callback) => {
+      // allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      // Normalize current origin for comparison
+      const normalizedOrigin = origin.replace(/\/$/, '');
+      
+      if (allowedOrigins.includes(normalizedOrigin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
