@@ -4,8 +4,17 @@ A modern financial transaction management application for Indian users — track
 
 ---
 
+## Design
+
+🎨 **View the Figma Design**: [SpendWise UI/UX Design](https://www.figma.com/design/xfkvF45PRX2rzIEUrrT7bC/Spendwise?node-id=0-1&t=gBMgPX4ixG5aSHdj-0)
+
+The complete UI/UX design system including all major screens, components, and user flows.
+
+---
+
 ## Table of Contents
 
+- [Design](#design)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
