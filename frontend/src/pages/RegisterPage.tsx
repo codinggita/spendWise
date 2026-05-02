@@ -60,28 +60,27 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#131313] p-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        <div className="neo-card bg-[#0e0e0e] p-6 sm:p-8">
+        <div className="neo-card bg-card p-6 sm:p-8">
           <div className="text-center mb-6 sm:mb-8">
             <h1
-              className="text-3xl sm:text-4xl font-['Lexend'] font-bold text-[#ddb7ff] uppercase tracking-wider"
-              style={{ fontFamily: 'Lexend, sans-serif' }}
+              className="text-3xl sm:text-4xl font-['Lexend'] font-black text-primary uppercase tracking-tight"
             >
               Create Account
             </h1>
-            <p className="text-sm mt-2 text-[#888] font-['Public_Sans']">
+            <p className="text-sm mt-2 text-muted-foreground font-['Public_Sans'] font-bold">
               Free forever. Start tracking in seconds.
             </p>
           </div>
 
           {apiError && (
-            <div className="mb-6 p-4 bg-[#ff3333]/10 border-2 border-[#ff3333] text-[#ff3333] font-['Public_Sans'] font-medium">
+            <div className="mb-6 p-4 bg-destructive/10 border-2 border-destructive text-destructive font-['Public_Sans'] font-black uppercase text-sm">
               {apiError}
             </div>
           )}
@@ -90,7 +89,7 @@ export const RegisterPage = () => {
             <div className="space-y-2">
               <label
                 htmlFor="name"
-                className="block text-sm font-['Public_Sans'] font-semibold text-[#4cd7f6] uppercase tracking-wider"
+                className="block text-xs font-['Lexend'] font-black text-secondary uppercase tracking-widest"
               >
                 Full Name
               </label>
@@ -101,12 +100,12 @@ export const RegisterPage = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 autoComplete="name"
-                className={`neo-input w-full bg-[#131313] text-white px-4 py-3 font-['Public_Sans'] ${
-                  localErrors.name ? 'border-[#ff3333]' : ''
+                className={`neo-input w-full ${
+                  localErrors.name ? 'border-destructive' : ''
                 }`}
               />
               {localErrors.name && (
-                <p className="text-xs text-[#ff3333] font-['Public_Sans'] mt-1">
+                <p className="text-[10px] text-destructive font-black uppercase mt-1">
                   {localErrors.name}
                 </p>
               )}
@@ -115,7 +114,7 @@ export const RegisterPage = () => {
             <div className="space-y-2">
               <label
                 htmlFor="username"
-                className="block text-sm font-['Public_Sans'] font-semibold text-[#4cd7f6] uppercase tracking-wider"
+                className="block text-xs font-['Lexend'] font-black text-secondary uppercase tracking-widest"
               >
                 Username
               </label>
@@ -126,12 +125,12 @@ export const RegisterPage = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 autoComplete="username"
-                className={`neo-input w-full bg-[#131313] text-white px-4 py-3 font-['Public_Sans'] ${
-                  localErrors.username ? 'border-[#ff3333]' : ''
+                className={`neo-input w-full ${
+                  localErrors.username ? 'border-destructive' : ''
                 }`}
               />
               {localErrors.username && (
-                <p className="text-xs text-[#ff3333] font-['Public_Sans'] mt-1">
+                <p className="text-[10px] text-destructive font-black uppercase mt-1">
                   {localErrors.username}
                 </p>
               )}
@@ -140,7 +139,7 @@ export const RegisterPage = () => {
             <div className="space-y-2">
               <label
                 htmlFor="email"
-                className="block text-sm font-['Public_Sans'] font-semibold text-[#4cd7f6] uppercase tracking-wider"
+                className="block text-xs font-['Lexend'] font-black text-secondary uppercase tracking-widest"
               >
                 Email
               </label>
@@ -151,12 +150,12 @@ export const RegisterPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
-                className={`neo-input w-full bg-[#131313] text-white px-4 py-3 font-['Public_Sans'] ${
-                  localErrors.email ? 'border-[#ff3333]' : ''
+                className={`neo-input w-full ${
+                  localErrors.email ? 'border-destructive' : ''
                 }`}
               />
               {localErrors.email && (
-                <p className="text-xs text-[#ff3333] font-['Public_Sans'] mt-1">
+                <p className="text-[10px] text-destructive font-black uppercase mt-1">
                   {localErrors.email}
                 </p>
               )}
@@ -165,7 +164,7 @@ export const RegisterPage = () => {
             <div className="space-y-2">
               <label
                 htmlFor="password"
-                className="block text-sm font-['Public_Sans'] font-semibold text-[#4cd7f6] uppercase tracking-wider"
+                className="block text-xs font-['Lexend'] font-black text-secondary uppercase tracking-widest"
               >
                 Password
               </label>
@@ -176,12 +175,12 @@ export const RegisterPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="new-password"
-                className={`neo-input w-full bg-[#131313] text-white px-4 py-3 font-['Public_Sans'] ${
-                  localErrors.password ? 'border-[#ff3333]' : ''
+                className={`neo-input w-full ${
+                  localErrors.password ? 'border-destructive' : ''
                 }`}
               />
               {localErrors.password && (
-                <p className="text-xs text-[#ff3333] font-['Public_Sans'] mt-1">
+                <p className="text-[10px] text-destructive font-black uppercase mt-1">
                   {localErrors.password}
                 </p>
               )}
@@ -189,22 +188,22 @@ export const RegisterPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="neo-btn w-full bg-[#ddb7ff] text-black font-['Lexend'] font-bold uppercase tracking-wider py-4 text-base sm:text-lg"
+              className="neo-btn w-full bg-primary text-primary-foreground py-4 text-base"
             >
               {loading ? 'Creating account...' : 'Create Free Account'}
             </button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-[#888] font-['Public_Sans']">
+            <p className="text-muted-foreground font-['Public_Sans'] font-bold text-sm">
               Already have an account?{' '}
-              <Link to="/login" className="text-[#e2c62d] hover:underline font-bold">
+              <Link to="/login" className="text-tertiary hover:underline">
                 Sign in
               </Link>
             </p>
           </div>
           <div className="mt-3 text-center">
-            <Link to="/" className="text-xs text-[#666] hover:text-white font-['Public_Sans']">
+            <Link to="/" className="text-xs text-muted-foreground hover:text-foreground font-black uppercase tracking-widest">
               ← Back to home
             </Link>
           </div>

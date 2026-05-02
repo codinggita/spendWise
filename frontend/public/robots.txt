@@ -1,0 +1,29 @@
+# robots.txt for SpendWise - AI Expense Tracker
+# https://spendwise.app
+
+# Allow all search engine crawlers
+User-agent: *
+
+# Allow access to all public pages
+Allow: /
+Allow: /login
+Allow: /register
+
+# Protected routes (app requires authentication)
+# These are still accessible but may redirect to login
+Allow: /analytics
+Allow: /feed
+Allow: /settings
+
+# Disallow API endpoints and internal paths
+Disallow: /api/
+Disallow: /app
+
+# Sitemap location
+Sitemap: https://spendwise.app/sitemap.xml
+
+# Crawl-delay (optional, helps prevent server overload)
+# Crawl-delay: 10
+
+# Note: SpendWise is a Single Page Application (SPA)
+# Dynamic content is rendered client-side with React

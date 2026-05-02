@@ -1,9 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Upload, File, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import api from '@/services/api';
 
 export const CSVUploader = () => {
@@ -56,23 +55,24 @@ export const CSVUploader = () => {
   };
 
   return (
-    <Card className="bg-slate-900 border-slate-700">
-      <CardHeader>
-        <CardTitle className="text-white">Import Transactions</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <div className="bg-card border-4 border-black p-6 sm:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <h2 className="text-lg sm:text-xl font-bold text-tertiary font-['Lexend'] uppercase tracking-wider mb-6 flex items-center gap-2">
+        <Upload className="h-5 w-5" />
+        Import Transactions
+      </h2>
+      <div className="space-y-6">
         <div
           {...getRootProps()}
-          className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
-            isDragActive ? 'border-amber-500 bg-amber-500/5' : 'border-slate-700 hover:border-slate-600'
+          className={`border-4 border-dashed p-8 text-center cursor-pointer transition-all ${
+            isDragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary'
           }`}
         >
           <input {...getInputProps()} />
-          <Upload className="mx-auto h-12 w-12 text-slate-400" />
-          <p className="mt-4 text-slate-400">
+          <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
+          <p className="mt-4 text-foreground font-bold uppercase tracking-tight">
             {isDragActive ? 'Drop the CSV file here...' : 'Drag and drop a CSV file, or click to select'}
           </p>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-xs font-bold text-muted-foreground uppercase tracking-widest">
             Supports bank statements from 40+ Indian banks
           </p>
         </div>
@@ -83,28 +83,30 @@ export const CSVUploader = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="mt-4 flex items-center justify-between p-4 bg-slate-800 rounded-lg"
+              className="mt-4 flex items-center justify-between p-4 bg-surface-low border-2 border-black"
             >
               <div className="flex items-center gap-3">
-                <File className="h-5 w-5 text-slate-400" />
-                <span className="font-medium text-white">{file.name}</span>
-                <span className="text-sm text-slate-500">
-                  ({(file.size / 1024).toFixed(1)} KB)
-                </span>
+                <File className="h-5 w-5 text-primary" />
+                <div>
+                  <p className="font-bold text-foreground truncate max-w-[200px]">{file.name}</p>
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+                    {(file.size / 1024).toFixed(1)} KB
+                  </p>
+                </div>
               </div>
               <div className="flex items-center gap-2">
                 <Button 
                   onClick={handleUpload} 
                   disabled={uploading}
-                  className="bg-amber-500 hover:bg-amber-600 text-slate-900"
+                  className="neo-btn bg-tertiary text-tertiary-foreground border-2 border-black"
                 >
                   {uploading ? 'Uploading...' : 'Upload'}
                 </Button>
                 <Button 
-                  variant="ghost" 
+                  variant="outline" 
                   size="icon" 
                   onClick={clearFile}
-                  className="text-slate-400 hover:text-white"
+                  className="border-2 border-black bg-background text-foreground hover:bg-surface-high"
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -117,7 +119,7 @@ export const CSVUploader = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="mt-4 flex items-center gap-2 text-green-500"
+            className="mt-4 flex items-center gap-2 text-green-500 font-bold uppercase text-sm tracking-tight"
           >
             <CheckCircle className="h-5 w-5" />
             <span>Transactions imported successfully!</span>
@@ -128,13 +130,13 @@ export const CSVUploader = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="mt-4 flex items-center gap-2 text-red-500"
+            className="mt-4 flex items-center gap-2 text-destructive font-bold uppercase text-sm tracking-tight"
           >
             <AlertCircle className="h-5 w-5" />
             <span>{errorMessage || 'Failed to import transactions. Please check your CSV format.'}</span>
           </motion.div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };

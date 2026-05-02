@@ -25,7 +25,7 @@ export const protect = (req: Request, res: Response, next: NextFunction): void =
       return next(new AppError('Authentication required. Please log in.', 401));
     }
     const decoded = jwt.verify(token, env.JWT_SECRET as string) as JwtPayload;
-    if (!decoded.userId) {
+    if (!decoded || !decoded.userId) {
       return next(new AppError('Invalid authentication token.', 401));
     }
     req.user = { userId: decoded.userId, email: decoded.email };

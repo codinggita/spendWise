@@ -88,48 +88,48 @@ export const SettingsPage = () => {
   };
 
   return (
-    <div className="space-y-8 max-w-4xl">
+    <div className="space-y-8 max-w-4xl pb-12">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-black text-white font-['Lexend'] uppercase tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-black text-foreground font-['Lexend'] uppercase tracking-tight">
           Settings
         </h1>
-        <p className="text-sm mt-2 text-slate-400 font-['Public_Sans']">
+        <p className="text-sm mt-2 text-muted-foreground font-['Public_Sans']">
           Customize your experience and manage your data
         </p>
       </div>
 
       {/* Profile Section */}
-      <div className="bg-[#0e0e0e] border-4 border-black p-6 sm:p-8 neo-shadow">
-        <h2 className="text-lg sm:text-xl font-bold text-[#ddb7ff] font-['Lexend'] uppercase tracking-wider mb-6 flex items-center gap-2">
+      <div className="bg-card border-4 border-black p-6 sm:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <h2 className="text-lg sm:text-xl font-bold text-primary font-['Lexend'] uppercase tracking-wider mb-6 flex items-center gap-2">
           <User className="h-5 w-5" />
           Profile Details
         </h2>
         <form onSubmit={handleUpdateProfile} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="block text-xs font-bold text-[#4cd7f6] uppercase tracking-widest font-['Lexend']">
+              <label className="block text-xs font-bold text-secondary uppercase tracking-widest font-['Lexend']">
                 Full Name
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="neo-input w-full bg-[#131313] text-white px-4 py-3 font-['Public_Sans']"
+                className="neo-input w-full"
                 placeholder="Priya Sharma"
                 required
               />
             </div>
             <div className="space-y-2">
-              <label className="block text-xs font-bold text-[#4cd7f6] uppercase tracking-widest font-['Lexend']">
+              <label className="block text-xs font-bold text-secondary uppercase tracking-widest font-['Lexend']">
                 Monthly Budget (₹)
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">₹</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">₹</span>
                 <input
                   type="number"
                   value={monthlyBudget}
                   onChange={(e) => setMonthlyBudget(Number(e.target.value))}
-                  className="neo-input w-full bg-[#131313] text-white pl-8 pr-4 py-3 font-['Public_Sans']"
+                  className="neo-input w-full pl-8"
                   placeholder="50000"
                   min="0"
                   required
@@ -139,7 +139,7 @@ export const SettingsPage = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="block text-xs font-bold text-[#4cd7f6] uppercase tracking-widest font-['Lexend']">
+            <label className="block text-xs font-bold text-secondary uppercase tracking-widest font-['Lexend']">
               Preferred Language
             </label>
             <div className="flex gap-4">
@@ -150,8 +150,8 @@ export const SettingsPage = () => {
                   onClick={() => setPreferredLanguage(lang as 'en' | 'hi')}
                   className={`flex-1 py-3 px-4 font-['Lexend'] font-bold uppercase tracking-wider transition-all border-2 border-black ${
                     preferredLanguage === lang
-                      ? 'bg-[#e2c62d] text-black neo-shadow translate-x-[-2px] translate-y-[-2px]'
-                      : 'bg-[#131313] text-white hover:bg-[#1c1b1b]'
+                      ? 'bg-tertiary text-tertiary-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] translate-x-[-2px] translate-y-[-2px]'
+                      : 'bg-background text-foreground hover:bg-surface-high'
                   }`}
                 >
                   {lang === 'en' ? 'English' : 'Hindi'}
@@ -163,7 +163,7 @@ export const SettingsPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="neo-btn bg-[#ddb7ff] text-black w-full sm:w-auto px-8 py-3 flex items-center justify-center gap-2"
+            className="neo-btn bg-primary text-primary-foreground w-full sm:w-auto px-8 py-3 flex items-center justify-center gap-2"
           >
             <Save className="h-4 w-4" />
             {loading ? 'Saving...' : 'Save Changes'}
@@ -172,13 +172,13 @@ export const SettingsPage = () => {
       </div>
 
       {/* Appearance Section */}
-      <div className="bg-[#0e0e0e] border-4 border-black p-6 sm:p-8 neo-shadow">
-        <h2 className="text-lg sm:text-xl font-bold text-[#4cd7f6] font-['Lexend'] uppercase tracking-wider mb-6 flex items-center gap-2">
+      <div className="bg-card border-4 border-black p-6 sm:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <h2 className="text-lg sm:text-xl font-bold text-secondary font-['Lexend'] uppercase tracking-wider mb-6 flex items-center gap-2">
           <Sun className="h-5 w-5" />
           Appearance
         </h2>
         <div className="space-y-4">
-          <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest font-['Lexend']">
+          <label className="block text-xs font-bold text-muted-foreground uppercase tracking-widest font-['Lexend']">
             Theme Mode
           </label>
           <div className="flex gap-2 sm:gap-4 flex-wrap">
@@ -192,8 +192,8 @@ export const SettingsPage = () => {
                 onClick={() => handleThemeChange(t.id as any)}
                 className={`flex-1 min-w-[100px] py-3 px-4 border-2 border-black font-['Lexend'] font-bold uppercase transition-all flex items-center justify-center gap-2 ${
                   theme === t.id
-                    ? 'bg-[#4cd7f6] text-black neo-shadow translate-x-[-2px] translate-y-[-2px]'
-                    : 'bg-[#131313] text-white hover:bg-[#1c1b1b]'
+                    ? 'bg-secondary text-secondary-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] translate-x-[-2px] translate-y-[-2px]'
+                    : 'bg-background text-foreground hover:bg-surface-high'
                 }`}
               >
                 <t.icon className="h-4 w-4" />
@@ -208,41 +208,41 @@ export const SettingsPage = () => {
       <CSVUploader />
 
       {/* Danger Zone */}
-      <div className="bg-[#0e0e0e] border-4 border-[#ff6b6b] p-6 sm:p-8 neo-shadow-danger">
-        <h2 className="text-lg sm:text-xl font-bold text-[#ff6b6b] font-['Lexend'] uppercase tracking-wider mb-2 flex items-center gap-2">
+      <div className="bg-card border-4 border-destructive p-6 sm:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] shadow-destructive/20">
+        <h2 className="text-lg sm:text-xl font-bold text-destructive font-['Lexend'] uppercase tracking-wider mb-2 flex items-center gap-2">
           <AlertTriangle className="h-5 w-5" />
           Danger Zone
         </h2>
-        <p className="text-sm text-slate-400 font-['Public_Sans'] mb-6">
+        <p className="text-sm text-muted-foreground font-['Public_Sans'] mb-6">
           Irreversible actions. Please proceed with caution.
         </p>
 
         <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
           <DialogTrigger asChild>
-            <button className="flex items-center gap-2 bg-[#ff6b6b]/10 text-[#ff6b6b] border-2 border-[#ff6b6b] hover:bg-[#ff6b6b] hover:text-white transition-all font-['Lexend'] font-bold uppercase py-3 px-6 rounded-none">
+            <button className="flex items-center gap-2 bg-destructive/10 text-destructive border-2 border-destructive hover:bg-destructive hover:text-destructive-foreground transition-all font-['Lexend'] font-bold uppercase py-3 px-6 rounded-none">
               <Trash2 className="h-4 w-4" />
               Delete Account
             </button>
           </DialogTrigger>
-          <DialogContent className="bg-[#131313] border-4 border-black text-white p-8 rounded-none max-w-md">
+          <DialogContent className="bg-background border-4 border-black text-foreground p-8 rounded-none max-w-md">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-black font-['Lexend'] uppercase text-[#ff6b6b] mb-4">
+              <DialogTitle className="text-2xl font-black font-['Lexend'] uppercase text-destructive mb-4">
                 Are you absolutely sure?
               </DialogTitle>
-              <DialogDescription className="text-slate-400 font-['Public_Sans'] text-base leading-relaxed">
+              <DialogDescription className="text-muted-foreground font-['Public_Sans'] text-base leading-relaxed">
                 This action cannot be undone. All your transactions, categories, and account data will be
-                <span className="text-white font-bold"> permanently deleted</span>.
+                <span className="text-foreground font-bold"> permanently deleted</span>.
               </DialogDescription>
             </DialogHeader>
             <div className="py-6 space-y-4">
-              <p className="text-sm font-bold text-slate-300 uppercase tracking-widest font-['Lexend']">
-                Type <span className="text-[#ff6b6b]">DELETE</span> to confirm
+              <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest font-['Lexend']">
+                Type <span className="text-destructive">DELETE</span> to confirm
               </p>
               <Input
                 value={deleteConfirm}
                 onChange={(e) => setDeleteConfirm(e.target.value.toUpperCase())}
                 placeholder="DELETE"
-                className="neo-input bg-black border-2 border-black text-white px-4 py-6 font-mono text-center text-xl tracking-[0.5em]"
+                className="neo-input bg-background border-2 border-black text-foreground px-4 py-6 font-mono text-center text-xl tracking-[0.5em]"
               />
             </div>
             <DialogFooter className="sm:justify-start gap-4">
@@ -251,15 +251,15 @@ export const SettingsPage = () => {
                 disabled={deleteConfirm !== 'DELETE' || loading}
                 className={`flex-1 py-4 font-['Lexend'] font-bold uppercase tracking-wider transition-all border-2 border-black ${
                   deleteConfirm === 'DELETE'
-                    ? 'bg-[#ff6b6b] text-white neo-shadow translate-x-[-2px] translate-y-[-2px]'
-                    : 'bg-slate-800 text-slate-500 cursor-not-allowed opacity-50'
+                    ? 'bg-destructive text-destructive-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] translate-x-[-2px] translate-y-[-2px]'
+                    : 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'
                 }`}
               >
                 {loading ? 'Deleting...' : 'Permanently Delete My Data'}
               </button>
               <button
                 onClick={() => setIsDeleteDialogOpen(false)}
-                className="flex-1 py-4 font-['Lexend'] font-bold uppercase border-2 border-black bg-white text-black hover:bg-slate-100"
+                className="flex-1 py-4 font-['Lexend'] font-bold uppercase border-2 border-black bg-surface text-foreground hover:bg-surface-high"
               >
                 Cancel
               </button>

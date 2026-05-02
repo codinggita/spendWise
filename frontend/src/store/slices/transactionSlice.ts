@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '@/services/api';
 
-interface Transaction {
+export interface Transaction {
   _id: string;
   amount: number;
   type: 'debit' | 'credit';

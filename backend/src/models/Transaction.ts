@@ -46,7 +46,7 @@ export interface ITransaction extends Document {
 const transactionSchema = new Schema<ITransaction>(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
-    amount: { type: Number, required: true, min: 0 },
+    amount: { type: Number, required: true },
     currency: { type: String, default: 'INR' },
     type: { type: String, enum: ['debit', 'credit'], required: true },
     category: {

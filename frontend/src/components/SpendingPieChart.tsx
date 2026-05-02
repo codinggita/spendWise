@@ -1,6 +1,6 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 
-const COLORS = ['#F59E0B', '#8B5CF6', '#3B82F6', '#EC4899', '#22C55E', '#6B7280'];
+const COLORS = ['#ddb7ff', '#4cd7f6', '#e2c62d', '#ff9f1c', '#2ec4b6', '#e71d36'];
 
 interface CategoryData {
   _id: string;
@@ -14,22 +14,22 @@ interface SpendingPieChartProps {
 export const SpendingPieChart = ({ data }: SpendingPieChartProps) => {
   const chartData = data.map((item) => ({
     name: item._id,
-    value: item.total,
+    value: Math.abs(item.total),
   }));
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ResponsiveContainer width="100%" height="100%">
       <PieChart>
         <Pie
           data={chartData}
           cx="50%"
           cy="50%"
-          outerRadius={100}
-          fill="#8884d8"
+          innerRadius={60}
+          outerRadius={80}
+          paddingAngle={5}
           dataKey="value"
-          label={({ name, percent }) =>
-            `${name} ${(percent * 100).toFixed(0)}%`
-          }
+          stroke="black"
+          strokeWidth={2}
         >
           {chartData.map((_, index) => (
             <Cell
@@ -43,17 +43,22 @@ export const SpendingPieChart = ({ data }: SpendingPieChartProps) => {
             new Intl.NumberFormat('en-IN', {
               style: 'currency',
               currency: 'INR',
+              maximumFractionDigits: 0,
             }).format(value)
           }
           contentStyle={{
-            backgroundColor: '#1E293B',
-            border: '1px solid #334155',
-            borderRadius: '8px',
-            color: '#CBD5E1',
+            backgroundColor: 'var(--card)',
+            border: '2px solid var(--border)',
+            borderRadius: '0px',
+            color: 'var(--foreground)',
+            boxShadow: '4px 4px 0px 0px rgba(0,0,0,1)'
           }}
         />
         <Legend
-          wrapperStyle={{ color: '#CBD5E1' }}
+          verticalAlign="bottom"
+          height={36}
+          iconType="rect"
+          formatter={(value) => <span className="text-[10px] font-bold uppercase text-foreground/70">{value}</span>}
         />
       </PieChart>
     </ResponsiveContainer>

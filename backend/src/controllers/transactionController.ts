@@ -15,7 +15,7 @@ const TRANSACTION_CATEGORIES = [
 ] as const;
 
 const createTransactionSchema = z.object({
-  amount: z.number().positive('Amount must be positive'),
+  amount: z.number(),
   type: z.enum(TRANSACTION_TYPES),
   rawDescription: z.string().min(1).max(500),
   source: z.enum(TRANSACTION_SOURCES),
