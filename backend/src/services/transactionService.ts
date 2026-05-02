@@ -175,6 +175,9 @@ export const bulkCreateTransactions = async (
     upiId?: string;
     bankReference?: string;
     currency?: string;
+    isRecurring?: boolean;
+    tags?: string[];
+    notes?: string;
   }>
 ): Promise<{ created: number; failed: number }> => {
   let created = 0;

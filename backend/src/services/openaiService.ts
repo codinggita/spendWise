@@ -54,14 +54,18 @@ export const translateAndCategorize = async (
 ): Promise<{ plainLanguage: string; category: string }> => {
   const normalizedKey = normalizePattern(rawDescription);
 
-  const cached = await PatternCache.findOneAndUpdate(
-    { rawPattern: normalizedKey },
-    { $inc: { hitCount: 1 } },
-    { new: true }
-  );
+  try {
+    const cached = await PatternCache.findOneAndUpdate(
+      { rawPattern: normalizedKey },
+      { $inc: { hitCount: 1 } },
+      { new: true }
+    );
 
-  if (cached) {
-    return { plainLanguage: cached.plainLanguage, category: cached.category };
+    if (cached) {
+      return { plainLanguage: cached.plainLanguage, category: cached.category };
+    }
+  } catch (cacheErr) {
+    logger.warn(`PatternCache lookup failed: ${cacheErr}`);
   }
 
   if (!env.OPENAI_API_KEY) {
@@ -98,7 +102,11 @@ export const translateAndCategorize = async (
     const category =
       categoryRes.choices[0]?.message?.content?.trim() || 'Other';
 
-    await PatternCache.create({ rawPattern: normalizedKey, plainLanguage, category });
+    try {
+      await PatternCache.create({ rawPattern: normalizedKey, plainLanguage, category });
+    } catch (cacheCreateErr) {
+      logger.warn(`PatternCache creation failed: ${cacheCreateErr}`);
+    }
 
     return { plainLanguage, category };
   } catch (err) {

@@ -13,7 +13,7 @@ export const setTokenCookie = (res: Response, token: string): void => {
   res.cookie('jwt', token, {
     httpOnly: true,
     secure: env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax', // Use 'lax' for local dev
     maxAge: 7 * 24 * 60 * 60 * 1000,
     path: '/',
   });
@@ -23,7 +23,7 @@ export const clearTokenCookie = (res: Response): void => {
   res.cookie('jwt', '', {
     httpOnly: true,
     secure: env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax', // Use 'lax' for local dev
     maxAge: 0,
     path: '/',
   });

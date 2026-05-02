@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -89,16 +90,19 @@ export const EditTransactionModal = ({ open, onOpenChange, transaction }: EditTr
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-slate-900 border-slate-700 text-white sm:max-w-[500px]">
+      <DialogContent className="bg-background border-4 border-black text-foreground sm:max-w-[500px] rounded-none">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Edit Transaction</DialogTitle>
+          <DialogTitle className="text-2xl font-black font-['Lexend'] uppercase">Edit Transaction</DialogTitle>
+          <DialogDescription className="text-muted-foreground font-['Public_Sans']">
+            Update the details of your transaction.
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
           <div className="space-y-2">
-            <Label htmlFor="category">Category</Label>
+            <Label htmlFor="category" className="text-xs font-bold uppercase tracking-widest">Category</Label>
             <select
               id="category"
-              className="w-full bg-slate-800 border border-slate-600 text-white rounded-md px-3 py-2"
+              className="neo-input w-full"
               {...register('category')}
             >
               {TRANSACTION_CATEGORIES.map((cat) => (
@@ -106,44 +110,44 @@ export const EditTransactionModal = ({ open, onOpenChange, transaction }: EditTr
               ))}
             </select>
             {errors.category && (
-              <p className="text-red-500 text-sm">{errors.category.message}</p>
+              <p className="text-destructive text-xs font-bold uppercase">{errors.category.message}</p>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="merchantName">Merchant Name (Optional)</Label>
+            <Label htmlFor="merchantName" className="text-xs font-bold uppercase tracking-widest">Merchant Name (Optional)</Label>
             <Input
               id="merchantName"
               placeholder="e.g., Starbucks"
-              className="bg-slate-800 border-slate-600 text-white"
+              className="neo-input w-full"
               {...register('merchantName')}
             />
             {errors.merchantName && (
-              <p className="text-red-500 text-sm">{errors.merchantName.message}</p>
+              <p className="text-destructive text-xs font-bold uppercase">{errors.merchantName.message}</p>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="notes">Notes (Optional)</Label>
+            <Label htmlFor="notes" className="text-xs font-bold uppercase tracking-widest">Notes (Optional)</Label>
             <Input
               id="notes"
               placeholder="Additional notes..."
-              className="bg-slate-800 border-slate-600 text-white"
+              className="neo-input w-full"
               {...register('notes')}
             />
             {errors.notes && (
-              <p className="text-red-500 text-sm">{errors.notes.message}</p>
+              <p className="text-destructive text-xs font-bold uppercase">{errors.notes.message}</p>
             )}
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 p-2 border-2 border-black bg-surface-low">
             <input
               id="isRecurring"
               type="checkbox"
-              className="w-4 h-4 bg-slate-800 border-slate-600 rounded"
+              className="w-4 h-4 border-2 border-black rounded-none bg-background checked:bg-primary"
               {...register('isRecurring')}
             />
-            <Label htmlFor="isRecurring" className="cursor-pointer">Recurring Transaction</Label>
+            <Label htmlFor="isRecurring" className="cursor-pointer text-xs font-bold uppercase tracking-widest">Recurring Transaction</Label>
           </div>
 
           <div className="flex justify-end gap-3 pt-4">
@@ -151,14 +155,14 @@ export const EditTransactionModal = ({ open, onOpenChange, transaction }: EditTr
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="bg-slate-800 border-slate-600 text-white hover:bg-slate-700"
+              className="neo-btn bg-background text-foreground hover:bg-surface-high border-2 border-black"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={loading}
-              className="bg-red-500 hover:bg-red-600 text-white border-4 border-red-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all disabled:opacity-50"
+              className="neo-btn bg-primary text-primary-foreground border-2 border-black hover:bg-primary/90 disabled:opacity-50"
             >
               {loading ? 'Updating...' : 'Update Transaction'}
             </Button>

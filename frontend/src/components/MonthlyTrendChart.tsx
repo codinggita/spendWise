@@ -9,8 +9,9 @@ import {
 } from 'recharts';
 
 interface TrendData {
-  month: string;
-  total: number;
+  monthLabel: string;
+  totalDebit: number;
+  totalCredit: number;
 }
 
 interface MonthlyTrendChartProps {
@@ -19,17 +20,17 @@ interface MonthlyTrendChartProps {
 
 export const MonthlyTrendChart = ({ data }: MonthlyTrendChartProps) => {
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ResponsiveContainer width="100%" height="100%">
       <LineChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+        <CartesianGrid strokeDasharray="3 3" stroke="var(--muted-foreground)" opacity={0.2} />
         <XAxis 
-          dataKey="month" 
-          stroke="#CBD5E1"
-          tick={{ fill: '#CBD5E1' }}
+          dataKey="monthLabel" 
+          stroke="var(--foreground)"
+          tick={{ fill: 'var(--foreground)', fontSize: 10 }}
         />
         <YAxis 
-          stroke="#CBD5E1"
-          tick={{ fill: '#CBD5E1' }}
+          stroke="var(--foreground)"
+          tick={{ fill: 'var(--foreground)', fontSize: 10 }}
           tickFormatter={(value) =>
             new Intl.NumberFormat('en-IN', {
               style: 'currency',
@@ -46,20 +47,31 @@ export const MonthlyTrendChart = ({ data }: MonthlyTrendChartProps) => {
             }).format(value)
           }
           contentStyle={{
-            backgroundColor: '#1E293B',
-            border: '1px solid #334155',
-            borderRadius: '8px',
-            color: '#CBD5E1',
+            backgroundColor: 'var(--card)',
+            border: '2px solid var(--border)',
+            borderRadius: '0px',
+            color: 'var(--foreground)',
+            boxShadow: '4px 4px 0px 0px rgba(0,0,0,1)'
           }}
-          labelStyle={{ color: '#FFFFFF' }}
+          labelStyle={{ color: 'var(--foreground)', fontWeight: 'bold' }}
         />
         <Line
           type="monotone"
-          dataKey="total"
-          stroke="#F59E0B"
-          strokeWidth={2}
-          dot={{ fill: '#F59E0B', r: 4 }}
-          activeDot={{ r: 8, fill: '#F59E0B' }}
+          dataKey="totalDebit"
+          name="Spending"
+          stroke="var(--expense)"
+          strokeWidth={4}
+          dot={{ fill: 'var(--expense)', r: 4, strokeWidth: 2, stroke: 'black' }}
+          activeDot={{ r: 6, fill: 'var(--expense)', stroke: 'black', strokeWidth: 2 }}
+        />
+        <Line
+          type="monotone"
+          dataKey="totalCredit"
+          name="Income"
+          stroke="var(--income)"
+          strokeWidth={4}
+          dot={{ fill: 'var(--income)', r: 4, strokeWidth: 2, stroke: 'black' }}
+          activeDot={{ r: 6, fill: 'var(--income)', stroke: 'black', strokeWidth: 2 }}
         />
       </LineChart>
     </ResponsiveContainer>

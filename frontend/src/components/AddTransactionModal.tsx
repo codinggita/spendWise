@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -56,7 +57,7 @@ export const AddTransactionModal = () => {
   const onSubmit = async (data: FormData) => {
     try {
       await dispatch(createTransaction({
-        amount: data.type === 'debit' ? -Math.abs(data.amount) : Math.abs(data.amount),
+        amount: Math.abs(data.amount),
         type: data.type,
         rawDescription: data.rawDescription,
         source: data.source,
@@ -85,65 +86,68 @@ export const AddTransactionModal = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-red-500 hover:bg-red-600 text-white font-bold border-4 border-red-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
+        <Button className="neo-btn bg-destructive text-destructive-foreground border-4 border-black hover:bg-destructive/90">
           + Add Transaction
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-slate-900 border-slate-700 text-white sm:max-w-[500px]">
+      <DialogContent className="bg-background border-4 border-black text-foreground sm:max-w-[500px] rounded-none">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Add Transaction</DialogTitle>
+          <DialogTitle className="text-2xl font-black font-['Lexend'] uppercase">Add Transaction</DialogTitle>
+          <DialogDescription className="text-muted-foreground font-['Public_Sans']">
+            Enter the details of your transaction below.
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="amount">Amount</Label>
+              <Label htmlFor="amount" className="text-xs font-bold uppercase tracking-widest">Amount</Label>
               <Input
                 id="amount"
                 type="number"
                 step="0.01"
                 placeholder="0.00"
-                className="bg-slate-800 border-slate-600 text-white"
+                className="neo-input w-full"
                 {...register('amount', { valueAsNumber: true })}
               />
               {errors.amount && (
-                <p className="text-red-500 text-sm">{errors.amount.message}</p>
+                <p className="text-destructive text-xs font-bold uppercase">{errors.amount.message}</p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="type">Type</Label>
+              <Label htmlFor="type" className="text-xs font-bold uppercase tracking-widest">Type</Label>
               <select
                 id="type"
-                className="w-full bg-slate-800 border border-slate-600 text-white rounded-md px-3 py-2"
+                className="neo-input w-full"
                 {...register('type')}
               >
                 <option value="debit">Debit</option>
                 <option value="credit">Credit</option>
               </select>
               {errors.type && (
-                <p className="text-red-500 text-sm">{errors.type.message}</p>
+                <p className="text-destructive text-xs font-bold uppercase">{errors.type.message}</p>
               )}
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="rawDescription">Description</Label>
+            <Label htmlFor="rawDescription" className="text-xs font-bold uppercase tracking-widest">Description</Label>
             <Input
               id="rawDescription"
               placeholder="e.g., Coffee at Starbucks"
-              className="bg-slate-800 border-slate-600 text-white"
+              className="neo-input w-full"
               {...register('rawDescription')}
             />
             {errors.rawDescription && (
-              <p className="text-red-500 text-sm">{errors.rawDescription.message}</p>
+              <p className="text-destructive text-xs font-bold uppercase">{errors.rawDescription.message}</p>
             )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="source">Source</Label>
+              <Label htmlFor="source" className="text-xs font-bold uppercase tracking-widest">Source</Label>
               <select
                 id="source"
-                className="w-full bg-slate-800 border border-slate-600 text-white rounded-md px-3 py-2"
+                className="neo-input w-full"
                 {...register('source')}
               >
                 {TRANSACTION_SOURCES.map((src) => (
@@ -151,57 +155,57 @@ export const AddTransactionModal = () => {
                 ))}
               </select>
               {errors.source && (
-                <p className="text-red-500 text-sm">{errors.source.message}</p>
+                <p className="text-destructive text-xs font-bold uppercase">{errors.source.message}</p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="sourceName">Source Name</Label>
+              <Label htmlFor="sourceName" className="text-xs font-bold uppercase tracking-widest">Source Name</Label>
               <Input
                 id="sourceName"
                 placeholder="e.g., HDFC Bank"
-                className="bg-slate-800 border-slate-600 text-white"
+                className="neo-input w-full"
                 {...register('sourceName')}
               />
               {errors.sourceName && (
-                <p className="text-red-500 text-sm">{errors.sourceName.message}</p>
+                <p className="text-destructive text-xs font-bold uppercase">{errors.sourceName.message}</p>
               )}
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="date">Date</Label>
+            <Label htmlFor="date" className="text-xs font-bold uppercase tracking-widest">Date</Label>
             <Input
               id="date"
               type="date"
-              className="bg-slate-800 border-slate-600 text-white"
+              className="neo-input w-full"
               {...register('date')}
             />
             {errors.date && (
-              <p className="text-red-500 text-sm">{errors.date.message}</p>
+              <p className="text-destructive text-xs font-bold uppercase">{errors.date.message}</p>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="notes">Notes (Optional)</Label>
+            <Label htmlFor="notes" className="text-xs font-bold uppercase tracking-widest">Notes (Optional)</Label>
             <Input
               id="notes"
               placeholder="Additional notes..."
-              className="bg-slate-800 border-slate-600 text-white"
+              className="neo-input w-full"
               {...register('notes')}
             />
             {errors.notes && (
-              <p className="text-red-500 text-sm">{errors.notes.message}</p>
+              <p className="text-destructive text-xs font-bold uppercase">{errors.notes.message}</p>
             )}
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 p-2 border-2 border-black bg-surface-low">
             <input
               id="isRecurring"
               type="checkbox"
-              className="w-4 h-4 bg-slate-800 border-slate-600 rounded"
+              className="w-4 h-4 border-2 border-black rounded-none bg-background checked:bg-primary"
               {...register('isRecurring')}
             />
-            <Label htmlFor="isRecurring" className="cursor-pointer">Recurring Transaction</Label>
+            <Label htmlFor="isRecurring" className="cursor-pointer text-xs font-bold uppercase tracking-widest">Recurring Transaction</Label>
           </div>
 
           <div className="flex justify-end gap-3 pt-4">
@@ -209,14 +213,14 @@ export const AddTransactionModal = () => {
               type="button"
               variant="outline"
               onClick={() => setOpen(false)}
-              className="bg-slate-800 border-slate-600 text-white hover:bg-slate-700"
+              className="neo-btn bg-background text-foreground hover:bg-surface-high border-2 border-black"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={loading}
-              className="bg-red-500 hover:bg-red-600 text-white border-4 border-red-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all disabled:opacity-50"
+              className="neo-btn bg-destructive text-destructive-foreground border-2 border-black hover:bg-destructive/90 disabled:opacity-50"
             >
               {loading ? 'Creating...' : 'Create Transaction'}
             </Button>

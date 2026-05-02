@@ -21,6 +21,9 @@ interface ParsedTransaction {
   upiId?: string;
   bankReference?: string;
   currency: string;
+  isRecurring?: boolean;
+  tags?: string[];
+  notes?: string;
 }
 
 const detectBankFormat = (headers: string[]): BankFormat => {
@@ -167,6 +170,11 @@ const parseGeneric = (row: RawCSVRow): ParsedTransaction | null => {
 
   if (!description || (!debit && !credit)) return null;
 
+  // Extract extra fields if available
+  const isRecurring = row['Is Recurring']?.toLowerCase() === 'true' || row['isRecurring']?.toLowerCase() === 'true';
+  const tags = row['Tags'] || row['tags'] ? (row['Tags'] || row['tags']).split(',').map(t => t.trim()).filter(t => t) : undefined;
+  const notes = row['Notes'] || row['notes'] || undefined;
+
   return {
     amount: debit > 0 ? debit : credit,
     type: debit > 0 ? 'debit' : 'credit',
@@ -176,6 +184,9 @@ const parseGeneric = (row: RawCSVRow): ParsedTransaction | null => {
     date,
     upiId: extractUpiId(description),
     currency: 'INR',
+    isRecurring,
+    tags,
+    notes,
   };
 };
 
@@ -199,6 +210,7 @@ export const processCSVImport = async (
   const parsed = Papa.parse<RawCSVRow>(csvString, {
     header: true,
     skipEmptyLines: true,
+    comments: '#',
     transformHeader: (h: string) => h.trim(),
   });
 

@@ -1,35 +1,44 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { TrendingUp, TrendingDown, Target, Calendar } from 'lucide-react';
 import { SpendingPieChart } from '@/components/SpendingPieChart';
 import { MonthlyTrendChart } from '@/components/MonthlyTrendChart';
+import { TransactionLegend } from '@/components/TransactionLegend';
 import api from '@/services/api';
 
 interface CategoryData {
-  _id: string;
+  category: string;
   total: number;
-  count?: number;
+  count: number;
+  percentage: number;
 }
 
 interface TrendData {
-  month: string;
-  total: number;
+  monthLabel: string;
+  totalDebit: number;
+  totalCredit: number;
 }
 
 interface DashboardSummary {
-  totalSpent: number;
-  totalIncome: number;
-  transactionCount: number;
-  averageTransaction: number;
+  currentMonthSpend: number;
+  currentMonthIncome: number;
+  totalTransactions: number;
+  avgDailySpend: number;
+  topCategory: string;
+  budgetUtilization: number;
+  savingsRate: number;
+  lastMonthSpend: number;
 }
 
 interface SourceData {
-  _id: string;
+  source: string;
   total: number;
   count: number;
+  percentage: number;
 }
 
 interface MerchantData {
-  _id: string;
+  merchant: string;
   total: number;
   count: number;
 }
@@ -58,16 +67,8 @@ export const DashboardPage = () => {
         setSummary(dashboardRes.data.data);
         setCategoryData(categoriesRes.data.data || []);
         setTrendData(trendRes.data.data || []);
-        setSourceData((sourcesRes.data.data || []).map((s: any) => ({
-          _id: s.source,
-          total: s.total,
-          count: s.count
-        })));
-        setMerchantData((merchantsRes.data.data || []).map((m: any) => ({
-          _id: m.merchant,
-          total: m.total,
-          count: m.count
-        })));
+        setSourceData(sourcesRes.data.data || []);
+        setMerchantData(merchantsRes.data.data || []);
       } catch (err: any) {
         setError(err.response?.data?.message || 'Failed to load analytics');
       } finally {
@@ -82,24 +83,24 @@ export const DashboardPage = () => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
+      maximumFractionDigits: 0,
     }).format(amount);
   };
 
-  const totalSpent = summary?.totalSpent ?? 0;
+  const totalSpent = summary?.currentMonthSpend ?? 0;
 
   if (loading) {
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">Analytics</h1>
-          <p className="text-sm mt-2 text-slate-400">Loading your spending data...</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[1, 2].map((i) => (
-            <div key={i} className="bg-slate-900 border border-slate-700 rounded-lg p-4 sm:p-6 h-48 sm:h-64 animate-pulse" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="bg-card border border-border rounded-lg p-6 h-32 animate-pulse" />
           ))}
         </div>
-        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 sm:p-6 h-48 sm:h-64 animate-pulse" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-card border border-border rounded-lg p-6 h-80 animate-pulse" />
+          <div className="bg-card border border-border rounded-lg p-6 h-80 animate-pulse" />
+        </div>
       </motion.div>
     );
   }
@@ -107,11 +108,8 @@ export const DashboardPage = () => {
   if (error) {
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">Analytics</h1>
-        </div>
-        <div className="bg-slate-900 border border-red-500 rounded-lg p-4 sm:p-6">
-          <p className="text-red-500 font-medium">{error}</p>
+        <div className="bg-card border-2 border-destructive rounded-lg p-6">
+          <p className="text-destructive font-bold">{error}</p>
         </div>
       </motion.div>
     );
@@ -121,111 +119,161 @@ export const DashboardPage = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="space-y-6"
+      className="space-y-6 pb-12"
     >
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-white">Analytics</h1>
-        <p className="text-sm mt-2 text-slate-400">Understand your spending patterns</p>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Dashboard</h1>
+          <p className="text-sm mt-1 text-muted-foreground">Welcome back to SpendWise</p>
+        </div>
+        <div className="bg-primary text-primary-foreground px-4 py-2 rounded-none border-2 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          {new Date().toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 sm:p-6">
-          <h2 className="text-base sm:text-lg font-semibold text-white mb-4">Spending by Category</h2>
-          {categoryData.length > 0 ? (
-            <SpendingPieChart data={categoryData} />
-          ) : (
-            <p className="text-slate-400 text-center py-8">No spending data yet. Import some transactions!</p>
-          )}
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-expense border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" role="region" aria-label="Total expenses this month">
+          <div className="flex justify-between items-start">
+            <p className="text-xs font-bold text-white uppercase tracking-wider">Total Spent</p>
+            <TrendingDown className="h-4 w-4 text-white" aria-hidden="true" />
+          </div>
+          <p className="text-2xl font-black text-white mt-1" aria-label={`Total expenses: ${formatAmount(totalSpent)}`}>{formatAmount(totalSpent)}</p>
+          <p className="text-xs font-bold text-white/70 mt-2">
+            {summary?.totalTransactions} transactions
+          </p>
+        </div>
+        <div className="bg-income border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" role="region" aria-label="Total income this month">
+          <div className="flex justify-between items-start">
+            <p className="text-xs font-bold text-white uppercase tracking-wider">Income</p>
+            <TrendingUp className="h-4 w-4 text-white" aria-hidden="true" />
+          </div>
+          <p className="text-2xl font-black text-white mt-1" aria-label={`Total income: ${formatAmount(summary?.currentMonthIncome ?? 0)}`}>{formatAmount(summary?.currentMonthIncome ?? 0)}</p>
+          <p className="text-xs font-bold text-white/70 mt-2">
+            Savings: {summary?.savingsRate}%
+          </p>
+        </div>
+        <div className="bg-expense/10 border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" role="region" aria-label="Budget utilization percentage">
+          <div className="flex justify-between items-start">
+            <p className="text-xs font-bold text-foreground/70 uppercase tracking-wider">Budget Used</p>
+            <Target className="h-4 w-4 text-expense" aria-hidden="true" />
+          </div>
+          <p className="text-2xl font-black text-expense mt-1" aria-label={`Budget utilization: ${summary?.budgetUtilization}%`}>{summary?.budgetUtilization}%</p>
+          <p className="text-xs font-bold text-foreground/70 mt-2">
+            Top: {summary?.topCategory}
+          </p>
+        </div>
+        <div className="bg-expense/10 border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" role="region" aria-label="Average daily spending">
+          <div className="flex justify-between items-start">
+            <p className="text-xs font-bold text-foreground/70 uppercase tracking-wider">Daily Avg</p>
+            <Calendar className="h-4 w-4 text-expense" aria-hidden="true" />
+          </div>
+          <p className="text-2xl font-black text-expense mt-1" aria-label={`Average daily spend: ${formatAmount(summary?.avgDailySpend ?? 0)}`}>{formatAmount(summary?.avgDailySpend ?? 0)}</p>
+          <p className="text-xs font-bold text-foreground/70 mt-2">
+            vs Last Month: {formatAmount(summary?.lastMonthSpend ?? 0)}
+          </p>
+        </div>
+      </div>
+
+      {/* Transaction Color Coding Legend */}
+      <div className="bg-surface-low border-2 border-black p-3 sm:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <TransactionLegend />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Category Chart */}
+        <div className="bg-card border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-lg font-bold text-foreground mb-6 uppercase tracking-tight">Spending by Category</h2>
+          <div className="h-64">
+            {categoryData.length > 0 ? (
+              <SpendingPieChart data={categoryData.map(c => ({ _id: c.category, total: c.total }))} />
+            ) : (
+              <div className="flex items-center justify-center h-full text-muted-foreground italic">No data available</div>
+            )}
+          </div>
         </div>
 
-        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 sm:p-6">
-          <h2 className="text-base sm:text-lg font-semibold text-white mb-4">Top Categories</h2>
+        {/* Top Categories List */}
+        <div className="bg-card border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-lg font-bold text-foreground mb-6 uppercase tracking-tight">Category Breakdown</h2>
           <div className="space-y-4">
             {categoryData.length > 0 ? (
-              categoryData.slice(0, 5).map((item) => {
-                const percentage = totalSpent > 0 ? (Math.abs(item.total) / Math.abs(totalSpent)) * 100 : 0;
-                return (
-                  <div key={item._id} className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-white">{item._id}</span>
-                      <span className="font-bold text-amber-500">
-                        {formatAmount(Math.abs(item.total))}
-                      </span>
-                    </div>
-                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-amber-500 transition-all"
-                        style={{ width: `${percentage}%` }}
-                      />
-                    </div>
-                    <p className="text-xs text-slate-500">{percentage.toFixed(1)}% of total</p>
+              categoryData.slice(0, 5).map((item) => (
+                <div key={item.category} className="space-y-2">
+                  <div className="flex justify-between text-sm font-bold">
+                    <span className="text-foreground uppercase">{item.category}</span>
+                    <span className="text-expense">{formatAmount(item.total)}</span>
                   </div>
-                );
-              })
+                  <div className="h-3 bg-background border border-black overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${item.percentage}%` }}
+                      className="h-full bg-expense"
+                    />
+                  </div>
+                  <div className="flex justify-between text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                    <span>{item.count} txns</span>
+                    <span>{item.percentage}% of total</span>
+                  </div>
+                </div>
+              ))
             ) : (
-              <p className="text-slate-400 text-center py-8">No categories to display</p>
+              <div className="flex items-center justify-center h-48 text-muted-foreground italic">No categories to display</div>
             )}
           </div>
         </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 sm:p-6">
-        <h2 className="text-base sm:text-lg font-semibold text-white mb-4">Monthly Trend</h2>
-        {trendData.length > 0 ? (
-          <MonthlyTrendChart data={trendData} />
-        ) : (
-          <p className="text-slate-400 text-center py-8">Not enough data for trends yet</p>
-        )}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 sm:p-6">
-          <h2 className="text-base sm:text-lg font-semibold text-white mb-4">Spending by Source</h2>
-          {sourceData.length > 0 ? (
-            <SpendingPieChart data={sourceData} />
+      {/* Monthly Trend */}
+      <div className="bg-card border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <h2 className="text-lg font-bold text-foreground mb-6 uppercase tracking-tight">Cash Flow Trend</h2>
+        <div className="h-80">
+          {trendData.length > 0 ? (
+            <MonthlyTrendChart data={trendData} />
           ) : (
-            <p className="text-slate-400 text-center py-8">No source data available</p>
+            <div className="flex items-center justify-center h-full text-muted-foreground italic">Insufficient data for trends</div>
           )}
         </div>
+      </div>
 
-        <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 sm:p-6">
-          <h2 className="text-base sm:text-lg font-semibold text-white mb-4">Top Merchants</h2>
-          <div className="space-y-4">
-            {merchantData.length > 0 ? (
-              merchantData.slice(0, 5).map((item) => {
-                const percentage = totalSpent > 0 ? (Math.abs(item.total) / Math.abs(totalSpent)) * 100 : 0;
-                return (
-                  <div key={item._id} className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-white truncate max-w-[150px]">{item._id}</span>
-                      <span className="font-bold text-amber-500">
-                        {formatAmount(Math.abs(item.total))}
-                      </span>
-                    </div>
-                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-blue-500 transition-all"
-                        style={{ width: `${Math.min(100, percentage)}%` }}
-                      />
-                    </div>
-                  </div>
-                );
-              })
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Source Breakdown */}
+        <div className="bg-card border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-lg font-bold text-foreground mb-6 uppercase tracking-tight">Spending by Source</h2>
+          <div className="h-64">
+            {sourceData.length > 0 ? (
+              <SpendingPieChart data={sourceData.map(s => ({ _id: s.source, total: s.total }))} />
             ) : (
-              <p className="text-slate-400 text-center py-8">No merchant data yet</p>
+              <div className="flex items-center justify-center h-full text-muted-foreground italic">No source data</div>
             )}
           </div>
         </div>
-      </div>
 
-      <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 sm:p-6">
-        <h2 className="text-base sm:text-lg font-semibold text-white mb-2">Total Spent This Month</h2>
-        <p className="text-4xl sm:text-5xl font-bold text-red-500">
-          {formatAmount(Math.abs(totalSpent))}
-        </p>
-        <p className="text-sm text-slate-400 mt-2">
-          {summary?.transactionCount ?? 0} transactions
-        </p>
+        {/* Top Merchants */}
+        <div className="bg-card border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-lg font-bold text-foreground mb-6 uppercase tracking-tight">Top Merchants</h2>
+          <div className="space-y-4">
+            {merchantData.length > 0 ? (
+              merchantData.slice(0, 5).map((item) => (
+                <div key={item.merchant} className="space-y-2">
+                  <div className="flex justify-between text-sm font-bold">
+                    <span className="text-foreground uppercase truncate max-w-[150px]">{item.merchant}</span>
+                    <span className="text-expense">{formatAmount(item.total)}</span>
+                  </div>
+                  <div className="h-3 bg-background border border-black overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${Math.min(100, (item.total / totalSpent) * 100)}%` }}
+                      className="h-full bg-expense"
+                    />
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="flex items-center justify-center h-48 text-muted-foreground italic">No merchant data yet</div>
+            )}
+          </div>
+        </div>
       </div>
     </motion.div>
   );

@@ -33,7 +33,10 @@ export const checkAuth = createAsyncThunk(
     try {
       const response = await api.get('/auth/me');
       return response.data.data.user;
-    } catch {
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        return rejectWithValue('unauthenticated');
+      }
       return rejectWithValue(null);
     }
   }
@@ -134,10 +137,14 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.isAuthenticated = true;
       })
-      .addCase(checkAuth.rejected, (state) => {
+      .addCase(checkAuth.rejected, (state, action) => {
         state.loading = false;
         state.initialized = true;
         state.isAuthenticated = false;
+        state.user = null;
+        if (action.payload === 'unauthenticated') {
+          // Silent failure is fine for checkAuth
+        }
       })
       .addCase(login.pending, (state) => {
         state.loading = true;

@@ -1,0 +1,104 @@
+# SPENDWISE COMPREHENSIVE CSV IMPORT EXAMPLE
+# ==========================================
+# This file demonstrates the full import capabilities of SpendWise.
+#
+# METADATA & VALIDATION RULES:
+# ---------------------------
+# 1. Description (String, Required): The transaction narration or remarks.
+#    - Supports: Quotes, commas, line breaks (if quoted), and Unicode (₹, €, etc.).
+#    - Validation: Must not be empty.
+#
+# 2. Debit (Number, Optional): Amount withdrawn/spent.
+#    - Format: 1234.56, 1,234.56, ₹1234.56.
+#    - Validation: Must be a positive number if Credit is 0 or empty.
+#
+# 3. Credit (Number, Optional): Amount deposited/received.
+#    - Format: Same as Debit.
+#    - Validation: Must be a positive number if Debit is 0 or empty.
+#
+# 4. Date (Date, Required): Transaction date.
+#    - Supported Formats: DD-MM-YYYY, DD/MM/YYYY, YYYY-MM-DD.
+#    - Validation: Invalid dates will default to the current system date.
+#
+# 5. Is Recurring (Boolean, Optional): Whether the transaction repeats.
+#    - Values: TRUE, FALSE.
+#
+# 6. Tags (Array, Optional): Comma-separated tags for categorization.
+#    - Example: "food, dinner, weekend".
+#
+# 7. Notes (String, Optional): Additional comments for the transaction.
+#
+# EDGE CASES TESTED:
+# ------------------
+# - Delimiter Detection: Uses commas as delimiters.
+# - Quoting: Fields containing commas or line breaks are wrapped in double quotes.
+# - Encoding: Supports UTF-8 (Unicode characters like ₹).
+# - Error Handling: Rows with zero/invalid amounts or missing descriptions are skipped.
+
+Description,Debit,Credit,Date,Is Recurring,Tags,Notes
+"UPI/123456789/AMAZON PAY/SHOPPING",1299.00,0.00,01-05-2026,FALSE,"shopping, amazon",Order for office chair
+"CASH WITHDRAWAL - ATM MUMBAI",5000.00,0.00,02-05-2026,FALSE,cash,"Emergency cash withdrawal"
+"SALARY FOR APRIL 2026",0.00,75000.00,03-05-2026,TRUE,salary,"Monthly credit"
+"RECHARGE JIO - 9876543210",299.00,0.00,04-05-2026,TRUE,"bills, jio",Mobile recharge
+"ZOMATO ORDER - DINNER",450.50,0.00,05-05-2026,FALSE,food,"Friday night pizza"
+"REFUND FROM SWIGGY",0.00,120.00,06-05-2026,FALSE,refund,"Delayed order refund"
+"INTEREST CREDIT",0.00,45.25,07-05-2026,TRUE,investment,"Savings account interest"
+"MOVIE TICKETS - PVR",850.00,0.00,08-05-2026,FALSE,entertainment,"Avengers movie"
+"RENT PAYMENT - FLAT 402",18000.00,0.00,09-05-2026,TRUE,rent,"Monthly rent"
+"UPI/987654321@OKICICI/GROCERY",350.75,0.00,10-05-2026,FALSE,groceries,"Milk and eggs"
+"ELECTRICITY BILL",2450.00,0.00,11-05-2026,TRUE,utilities,"Tata Power bill"
+"PETROL - BPCL STATION",1500.00,0.00,12-05-2026,FALSE,fuel,"Full tank"
+"UPI/FRIEND/LUNCH",0.00,500.00,13-05-2026,FALSE,transfer,"Lunch split"
+"GYM MEMBERSHIP",1200.00,0.00,14-05-2026,TRUE,health,"Gold's Gym"
+"INTERNET BILL - JIO FIBER",999.00,0.00,15-05-2026,TRUE,utilities,"Internet subscription"
+"MEDICAL STORE - APOLLO",450.00,0.00,16-05-2026,FALSE,medical,"Medicine"
+"UPI/TAXI/UBER",250.00,0.00,17-05-2026,FALSE,travel,"Office commute"
+"STARBUCKS COFFEE",380.00,0.00,18-05-2026,FALSE,food,"Morning coffee"
+"AMAZON PRIME SUBSCRIPTION",1499.00,0.00,19-05-2026,TRUE,subscriptions,"Yearly plan"
+"UPI/GROCERY/RELIANCE",780.50,0.00,20-05-2026,FALSE,groceries,"Weekly grocery"
+"D-MART SHOPPING",4500.00,0.00,21-05-2026,FALSE,shopping,"Monthly household items"
+"CASH DEPOSIT",0.00,2000.00,22-05-2026,FALSE,cash,"Self deposit"
+"HDFC BANK FD INTEREST",0.00,1250.00,23-05-2026,TRUE,investment,"FD returns"
+"UPI/NETFLIX/SUB",499.00,0.00,24-05-2026,TRUE,subscriptions,"Monthly plan"
+"GAS BILL - ADANI",1100.00,0.00,25-05-2026,TRUE,utilities,"Cooking gas"
+"CREDIT CARD PAYMENT",15000.00,0.00,26-05-2026,TRUE,bills,"HDFC CC Payment"
+"UPI/GIFT/BIRTHDAY",0.00,2100.00,27-05-2026,FALSE,gift,"From Mom"
+"TAILORING CHARGES",550.00,0.00,28-05-2026,FALSE,others,"Dress stitch"
+"CAR WASH SERVICE",400.00,0.00,29-05-2026,FALSE,car,"Exterior cleaning"
+"UPI/BARBER/HAIRCUT",200.00,0.00,30-05-2026,FALSE,personal,"Haircut"
+"DIVIDEND INCOME",0.00,350.00,31-05-2026,FALSE,investment,"TCS Dividend"
+"UPI/STREETFOOD/CHAAT",150.00,0.00,01-06-2026,FALSE,food,"Snacks"
+"PHARMACY - MEDPLUS",890.00,0.00,02-06-2026,FALSE,medical,"First aid kit"
+"UPI/PARKING/MALL",50.00,0.00,03-06-2026,FALSE,travel,"Nexus Mall"
+"FRUIT VENDOR",120.00,0.00,04-06-2026,FALSE,groceries,"Mangoes"
+"UPI/LAUNDRY/WASH",300.00,0.00,05-06-2026,FALSE,others,"Laundry service"
+"MILK DELIVERY",1450.00,0.00,06-06-2026,TRUE,groceries,"Monthly milk bill"
+"UPI/VEGETABLES/MARKET",280.00,0.00,07-06-2026,FALSE,groceries,"Fresh veggies"
+"COURIER CHARGES - BLUE DART",180.00,0.00,08-06-2026,FALSE,others,"Sending documents"
+"UPI/DONATION/TEMPLE",501.00,0.00,09-06-2026,FALSE,donation,"Temple donation"
+"STATIONERY - PEN & PAPER",85.00,0.00,10-06-2026,FALSE,education,"Exam pens"
+"UPI/MOBILE/REPAIR",1200.00,0.00,11-06-2026,FALSE,others,"Screen guard"
+"BUS TICKET - REDBUS",650.00,0.00,12-06-2026,FALSE,travel,"Weekend trip"
+"UPI/FRUITS/STALL",90.00,0.00,13-06-2026,FALSE,groceries,"Apples"
+"TEA & SNACKS",45.00,0.00,14-06-2026,FALSE,food,"Office tea"
+"UPI/AUTO/RIDE",60.00,0.00,15-06-2026,FALSE,travel,"Rickshaw to station"
+"NEWSPAPER BILL",450.00,0.00,16-06-2026,TRUE,utilities,"TOI subscription"
+"UPI/METRO/RECHARGE",200.00,0.00,17-06-2026,FALSE,travel,"Metro card"
+"CHIPS & COLD DRINK",75.00,0.00,18-06-2026,FALSE,food,"Evening snacks"
+"UPI/PANIPURI/STALL",30.00,0.00,19-06-2026,FALSE,food,"Treat"
+# --- EDGE CASES & MALFORMED ROWS ---
+"Row with comma, and quotes",100.00,0.00,20-06-2026,FALSE,test,"Testing commas"
+"Row with \"escaped\" quotes",200.00,0.00,21-06-2026,FALSE,test,"Testing quotes"
+"Row with line
+break in description",300.00,0.00,22-06-2026,FALSE,test,"Testing line breaks"
+"Unicode characters: ₹ € £ ¥",400.00,0.00,23-06-2026,FALSE,unicode,"Testing currency symbols"
+# Invalid amount (should be skipped)
+"Invalid Amount Row",abc,0.00,24-06-2026,FALSE,error,"Should fail"
+# Missing date (should default to current date)
+"Missing Date Row",50.00,0.00,,FALSE,date,"Should use current date"
+# Zero amount (should be skipped)
+"Zero Amount Row",0.00,0.00,25-06-2026,FALSE,error,"Should be skipped"
+# Empty row below
+,,,,,
+# Missing description (should be skipped)
+,100.00,0.00,26-06-2026,FALSE,error,"Missing description"

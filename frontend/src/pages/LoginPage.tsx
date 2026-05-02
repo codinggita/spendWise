@@ -46,28 +46,27 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#131313] p-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        <div className="neo-card bg-[#0e0e0e] p-6 sm:p-8">
+        <div className="neo-card bg-card p-6 sm:p-8">
           <div className="text-center mb-6 sm:mb-8">
             <h1
-              className="text-3xl sm:text-4xl font-['Lexend'] font-bold text-[#ddb7ff] uppercase tracking-wider"
-              style={{ fontFamily: 'Lexend, sans-serif' }}
+              className="text-3xl sm:text-4xl font-['Lexend'] font-black text-primary uppercase tracking-tight"
             >
               Welcome Back
             </h1>
-            <p className="text-sm mt-2 text-[#888] font-['Public_Sans']">
+            <p className="text-sm mt-2 text-muted-foreground font-['Public_Sans'] font-bold">
               Sign in to your SpendWise account
             </p>
           </div>
 
           {apiError && (
-            <div className="mb-6 p-4 bg-[#ff3333]/10 border-2 border-[#ff3333] text-[#ff3333] font-['Public_Sans'] font-medium">
+            <div className="mb-6 p-4 bg-destructive/10 border-2 border-destructive text-destructive font-['Public_Sans'] font-black uppercase text-sm">
               {apiError}
             </div>
           )}
@@ -76,7 +75,7 @@ export const LoginPage = () => {
             <div className="space-y-2">
               <label
                 htmlFor="email"
-                className="block text-sm font-['Public_Sans'] font-semibold text-[#4cd7f6] uppercase tracking-wider"
+                className="block text-xs font-['Lexend'] font-black text-secondary uppercase tracking-widest"
               >
                 Email
               </label>
@@ -87,12 +86,12 @@ export const LoginPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
-                className={`neo-input w-full bg-[#131313] text-white px-4 py-3 font-['Public_Sans'] ${
-                  localErrors.email ? 'border-[#ff3333]' : ''
+                className={`neo-input w-full ${
+                  localErrors.email ? 'border-destructive' : ''
                 }`}
               />
               {localErrors.email && (
-                <p className="text-xs text-[#ff3333] font-['Public_Sans'] mt-1">
+                <p className="text-[10px] text-destructive font-black uppercase mt-1">
                   {localErrors.email}
                 </p>
               )}
@@ -100,7 +99,7 @@ export const LoginPage = () => {
             <div className="space-y-2">
               <label
                 htmlFor="password"
-                className="block text-sm font-['Public_Sans'] font-semibold text-[#4cd7f6] uppercase tracking-wider"
+                className="block text-xs font-['Lexend'] font-black text-secondary uppercase tracking-widest"
               >
                 Password
               </label>
@@ -111,12 +110,12 @@ export const LoginPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
-                className={`neo-input w-full bg-[#131313] text-white px-4 py-3 font-['Public_Sans'] ${
-                  localErrors.password ? 'border-[#ff3333]' : ''
+                className={`neo-input w-full ${
+                  localErrors.password ? 'border-destructive' : ''
                 }`}
               />
               {localErrors.password && (
-                <p className="text-xs text-[#ff3333] font-['Public_Sans'] mt-1">
+                <p className="text-[10px] text-destructive font-black uppercase mt-1">
                   {localErrors.password}
                 </p>
               )}
@@ -124,7 +123,7 @@ export const LoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="neo-btn w-full bg-[#ddb7ff] text-black font-['Lexend'] font-bold uppercase tracking-wider py-4 text-base sm:text-lg"
+              className="neo-btn w-full bg-primary text-primary-foreground py-4 text-base"
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -132,18 +131,17 @@ export const LoginPage = () => {
 
           <div className="relative my-8">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t-2 border-[#333]"></span>
+              <span className="w-full border-t-2 border-border"></span>
             </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-[#0e0e0e] px-4 text-[#888] font-bold tracking-widest">Or continue with</span>
+            <div className="relative flex justify-center text-[10px] uppercase">
+              <span className="bg-card px-4 text-muted-foreground font-black tracking-[0.2em]">Or continue with</span>
             </div>
           </div>
 
           <button
             type="button"
-            className="w-full bg-white text-black font-['Lexend'] font-bold uppercase tracking-wider py-3 px-4 flex items-center justify-center gap-3 hover:bg-[#eee] transition-all border-2 border-black"
+            className="w-full bg-surface text-foreground font-['Lexend'] font-bold uppercase tracking-wider py-3 px-4 flex items-center justify-center gap-3 hover:bg-surface-high transition-all border-2 border-black"
             onClick={() => {
-              // Placeholder for Google OAuth
               alert('Google Login configuration required. See backend .env for GOOGLE_CLIENT_ID');
             }}
           >
@@ -169,15 +167,15 @@ export const LoginPage = () => {
           </button>
 
           <div className="mt-6 text-center">
-            <p className="text-[#888] font-['Public_Sans']">
+            <p className="text-muted-foreground font-['Public_Sans'] font-bold text-sm">
               Don&apos;t have an account?{' '}
-              <Link to="/register" className="text-[#e2c62d] hover:underline font-bold">
+              <Link to="/register" className="text-tertiary hover:underline">
                 Create one free
               </Link>
             </p>
           </div>
           <div className="mt-3 text-center">
-            <Link to="/" className="text-xs text-[#666] hover:text-white font-['Public_Sans']">
+            <Link to="/" className="text-xs text-muted-foreground hover:text-foreground font-black uppercase tracking-widest">
               ← Back to home
             </Link>
           </div>

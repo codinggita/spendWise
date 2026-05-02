@@ -5,6 +5,7 @@ import { store, AppDispatch, RootState } from '@/store';
 import { checkAuth } from '@/store/slices/authSlice';
 import { Toaster } from '@/components/ui/toaster';
 import { Layout } from '@/components/Layout';
+import { ThemeProvider } from '@/context/ThemeContext';
 
 // Lazy load components for performance
 const LandingPage = lazy(() => import('@/pages/LandingPage'));
@@ -15,8 +16,8 @@ const TransactionFeedPage = lazy(() => import('@/pages/TransactionFeedPage'));
 const SettingsPage = lazy(() => import('@/pages/SettingsPage'));
 
 const LoadingSpinner = () => (
-  <div className="min-h-screen flex items-center justify-center bg-[#131313]">
-    <div className="text-[#ddb7ff] font-['Lexend'] text-xl animate-pulse">
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="text-primary font-['Lexend'] text-xl font-black uppercase tracking-widest animate-pulse">
       Loading SpendWise...
     </div>
   </div>
@@ -79,9 +80,16 @@ const AppContent = () => {
 function App() {
   return (
     <Provider store={store}>
-      <Router>
-        <AppContent />
-      </Router>
+      <ThemeProvider>
+        <Router
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
+          <AppContent />
+        </Router>
+      </ThemeProvider>
     </Provider>
   );
 }

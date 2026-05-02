@@ -67,26 +67,26 @@ export const TransactionFilters = ({ onFiltersChange, onClear }: TransactionFilt
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-700 rounded-lg p-6 space-y-4">
-      <h3 className="text-lg font-semibold text-white">Filters</h3>
+    <div className="bg-card border-2 border-black p-6 space-y-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <h3 className="text-lg font-black text-foreground uppercase tracking-tight">Filters</h3>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="space-y-2">
-          <Label htmlFor="search">Search</Label>
+          <Label htmlFor="search" className="text-xs font-bold uppercase tracking-widest">Search</Label>
           <Input
             id="search"
             placeholder="Search transactions..."
-            className="bg-slate-800 border-slate-600 text-white"
+            className="neo-input w-full"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="category">Category</Label>
+          <Label htmlFor="category" className="text-xs font-bold uppercase tracking-widest">Category</Label>
           <select
             id="category"
-            className="w-full bg-slate-800 border border-slate-600 text-white rounded-md px-3 py-2"
+            className="neo-input w-full"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
@@ -98,10 +98,10 @@ export const TransactionFilters = ({ onFiltersChange, onClear }: TransactionFilt
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="source">Source</Label>
+          <Label htmlFor="source" className="text-xs font-bold uppercase tracking-widest">Source</Label>
           <select
             id="source"
-            className="w-full bg-slate-800 border border-slate-600 text-white rounded-md px-3 py-2"
+            className="neo-input w-full"
             value={source}
             onChange={(e) => setSource(e.target.value)}
           >
@@ -113,10 +113,10 @@ export const TransactionFilters = ({ onFiltersChange, onClear }: TransactionFilt
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="type">Type</Label>
+          <Label htmlFor="type" className="text-xs font-bold uppercase tracking-widest">Type</Label>
           <select
             id="type"
-            className="w-full bg-slate-800 border border-slate-600 text-white rounded-md px-3 py-2"
+            className="neo-input w-full"
             value={type}
             onChange={(e) => setType(e.target.value)}
           >
@@ -127,48 +127,48 @@ export const TransactionFilters = ({ onFiltersChange, onClear }: TransactionFilt
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="startDate">Start Date</Label>
+          <Label htmlFor="startDate" className="text-xs font-bold uppercase tracking-widest">Start Date</Label>
           <Input
             id="startDate"
             type="date"
-            className="bg-slate-800 border-slate-600 text-white"
+            className="neo-input w-full"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="endDate">End Date</Label>
+          <Label htmlFor="endDate" className="text-xs font-bold uppercase tracking-widest">End Date</Label>
           <Input
             id="endDate"
             type="date"
-            className="bg-slate-800 border-slate-600 text-white"
+            className="neo-input w-full"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="minAmount">Min Amount</Label>
+          <Label htmlFor="minAmount" className="text-xs font-bold uppercase tracking-widest">Min Amount</Label>
           <Input
             id="minAmount"
             type="number"
             step="0.01"
             placeholder="0.00"
-            className="bg-slate-800 border-slate-600 text-white"
+            className="neo-input w-full"
             value={minAmount}
             onChange={(e) => setMinAmount(e.target.value)}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="maxAmount">Max Amount</Label>
+          <Label htmlFor="maxAmount" className="text-xs font-bold uppercase tracking-widest">Max Amount</Label>
           <Input
             id="maxAmount"
             type="number"
             step="0.01"
             placeholder="0.00"
-            className="bg-slate-800 border-slate-600 text-white"
+            className="neo-input w-full"
             value={maxAmount}
             onChange={(e) => setMaxAmount(e.target.value)}
           />
@@ -178,25 +178,25 @@ export const TransactionFilters = ({ onFiltersChange, onClear }: TransactionFilt
           <input
             id="isRecurring"
             type="checkbox"
-            className="w-4 h-4 bg-slate-800 border-slate-600 rounded"
+            className="w-4 h-4 border-2 border-black rounded-none bg-background checked:bg-primary"
             checked={isRecurring}
             onChange={(e) => setIsRecurring(e.target.checked)}
           />
-          <Label htmlFor="isRecurring" className="cursor-pointer">Recurring Only</Label>
+          <Label htmlFor="isRecurring" className="cursor-pointer text-xs font-bold uppercase tracking-widest">Recurring Only</Label>
         </div>
       </div>
 
-      <div className="flex gap-3 pt-2">
+      <div className="flex gap-3 pt-4 border-t-2 border-black">
         <Button
           onClick={handleApplyFilters}
-          className="bg-red-500 hover:bg-red-600 text-white border-4 border-red-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+          className="neo-btn bg-destructive text-destructive-foreground border-2 border-black"
         >
           Apply Filters
         </Button>
         <Button
           onClick={handleClear}
           variant="outline"
-          className="bg-slate-800 border-slate-600 text-white hover:bg-slate-700"
+          className="neo-btn bg-background text-foreground border-2 border-black"
         >
           Clear
         </Button>

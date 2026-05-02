@@ -9,6 +9,7 @@ import { EmptyStateAnimation } from '@/components/LoadingAnimation';
 import { AddTransactionModal } from '@/components/AddTransactionModal';
 import { TransactionFilters, TransactionFilters as TransactionFiltersType } from '@/components/TransactionFilters';
 import { Pagination } from '@/components/Pagination';
+import { TransactionLegend } from '@/components/TransactionLegend';
 import { useDebounce } from '@/hooks/useDebounce';
 
 export const TransactionFeedPage = () => {
@@ -50,7 +51,11 @@ export const TransactionFeedPage = () => {
     }).format(amount);
   };
 
-  const totalSpent = transactions.reduce((sum, t) => sum + t.amount, 0);
+  const totalBalance = transactions.reduce((sum, t) => {
+    const amount = Math.abs(t.amount);
+    return t.type === 'debit' ? sum - amount : sum + amount;
+  }, 0);
+  const isNegative = totalBalance < 0;
 
   return (
     <motion.div
@@ -60,26 +65,35 @@ export const TransactionFeedPage = () => {
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
             Transactions
           </h1>
-          <p className="text-sm mt-2 text-slate-400">
+          <p className="text-sm mt-2 text-muted-foreground">
             Track your spending in plain language
           </p>
         </div>
         <AddTransactionModal />
       </div>
 
-      <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 sm:p-6">
-        <h2 className="text-base sm:text-lg font-semibold text-white mb-2">
-          This Month
+      <div className="bg-card border-2 border-black p-4 sm:p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" role="region" aria-label="Monthly Balance Summary">
+        <h2 className="text-base sm:text-lg font-bold text-foreground uppercase tracking-tight mb-2">
+          This Month's Balance
         </h2>
-        <p className="text-3xl sm:text-4xl font-bold text-red-500">
-          -{formatAmount(Math.abs(totalSpent))}
+        <p
+          className={`text-3xl sm:text-4xl font-black ${isNegative ? 'text-expense' : 'text-income'}`}
+          aria-label={`Current balance: ${isNegative ? 'Deficit' : 'Surplus'} of ${formatAmount(Math.abs(totalBalance))}`}
+          title={`${isNegative ? 'You spent more than you earned' : 'You earned more than you spent'}`}
+        >
+          {isNegative ? '-' : '+'}{formatAmount(Math.abs(totalBalance))}
         </p>
-        <p className="text-sm text-slate-400 mt-2">
+        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-2">
           {transactions.length} transactions
         </p>
+      </div>
+
+      {/* Transaction Color Coding Legend */}
+      <div className="bg-surface-low border-2 border-black p-3 sm:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <TransactionLegend />
       </div>
 
       <TransactionFilters onFiltersChange={handleFiltersChange} onClear={handleClearFilters} />
@@ -87,17 +101,17 @@ export const TransactionFeedPage = () => {
       {loading ? (
         <div className="space-y-4">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-24 bg-slate-900 border border-slate-700 rounded-lg animate-pulse" />
+            <div key={i} className="h-24 bg-card border-2 border-black animate-pulse shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" />
           ))}
         </div>
       ) : error ? (
-        <div className="bg-slate-900 border border-red-500 rounded-lg p-6">
-          <p className="text-red-500 font-medium">{error}</p>
+        <div className="bg-card border-2 border-destructive p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-destructive font-bold uppercase">{error}</p>
         </div>
       ) : transactions.length === 0 ? (
-        <div className="bg-slate-900 border border-slate-700 rounded-lg p-12 text-center">
+        <div className="bg-card border-2 border-black p-12 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <EmptyStateAnimation className="mb-4" />
-          <p className="text-slate-400">
+          <p className="text-muted-foreground font-bold italic">
             No transactions found. Import a bank statement to get started!
           </p>
         </div>

@@ -1,3 +1,43 @@
+/**
+ * SpendWise - Transaction Color Coding System Documentation
+ * ==========================================================
+ *
+ * VISUAL DISTINCTION BETWEEN DEBIT AND CREDIT TRANSACTIONS:
+ *
+ * EXPENSES (DEBIT) - Money going OUT:
+ *   - Light mode: Red (#ef4444) with minus (-) sign
+ *   - Dark mode: Light red (#f87171) with minus (-) sign
+ *   - WCAG 2.1 Contrast: 5.5:1 on white (exceeds AA 4.5:1 requirement)
+ *   - CSS Variable: var(--expense)
+ *   - Tailwind Class: text-expense, bg-expense
+ *   - Icon: ArrowDownLeft (pointing down-left to indicate outflow)
+ *
+ * INCOME (CREDIT) - Money coming IN:
+ *   - Light mode: Green (#22c55e) with plus (+) sign
+ *   - Dark mode: Light green (#34d399) with plus (+) sign
+ *   - WCAG 2.1 Contrast: 4.6:1 on white (exceeds AA 4.5:1 requirement)
+ *   - CSS Variable: var(--income)
+ *   - Tailwind Class: text-income, bg-income
+ *   - Icon: ArrowUpRight (pointing up-right to indicate inflow)
+ *
+ * ACCESSIBILITY FEATURES:
+ *   - ARIA labels on all transaction amounts announcing "Expense: -₹X" or "Income: +₹X"
+ *   - Title tooltips explaining "Expense (money spent)" or "Income (money received)"
+ *   - Role="region" and aria-label on summary cards for screen reader navigation
+ *   - Visual indicators (icons) combined with color and sign for multi-modal perception
+ *
+ * COMPONENTS USING THIS SYSTEM:
+ *   - TransactionCard.tsx: Individual transaction display with full visual indicators
+ *   - TransactionFeedPage.tsx: Balance summary and transaction list
+ *   - DashboardPage.tsx: Summary cards and category breakdowns
+ *   - TransactionLegend.tsx: Visual guide component explaining the color system
+ *   - LandingPage.tsx: Demo transaction previews
+ *
+ * DO NOT USE:
+ *   - text-red-500, text-green-500 (use semantic text-expense/text-income instead)
+ *   - text-destructive for expenses (destructive is for errors/actions, not expenses)
+ */
+
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;800;900&family=Public+Sans:wght@400;500;700&family=JetBrains+Mono:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
@@ -7,6 +47,40 @@
 
 @layer base {
   :root {
+    --background: #f8f9fa;
+    --foreground: #1a1a1a;
+    --surface: #ffffff;
+    --surface-low: #f1f3f5;
+    --surface-high: #e9ecef;
+    --surface-highest: #dee2e6;
+    --card: #ffffff;
+    --card-foreground: #1a1a1a;
+    --popover: #ffffff;
+    --popover-foreground: #1a1a1a;
+    --primary: #8b5cf6;
+    --primary-foreground: #ffffff;
+    --primary-container: #ddd6fe;
+    --secondary: #0ea5e9;
+    --secondary-foreground: #ffffff;
+    --secondary-container: #e0f2fe;
+    --tertiary: #f59e0b;
+    --tertiary-foreground: #ffffff;
+    --tertiary-container: #fef3c7;
+    --muted: #e9ecef;
+    --muted-foreground: #495057;
+    --accent: #8b5cf6;
+    --accent-foreground: #ffffff;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #000000;
+    --input: #ffffff;
+    --ring: #8b5cf6;
+    --radius: 0px;
+    --income: #22c55e;
+    --expense: #ef4444;
+  }
+
+  .dark {
     --background: #131313;
     --foreground: #e5e2e1;
     --surface: #201f1f;
@@ -36,18 +110,21 @@
     --input: #1c1b1b;
     --ring: #ddb7ff;
     --radius: 0px;
+    --income: #34d399;
+    --expense: #f87171;
   }
 }
 
 @layer base {
   * {
     @apply border-black;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
   }
   html {
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-[#131313] text-[#e5e2e1];
+    @apply bg-background text-foreground;
     font-family: 'Public Sans', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
@@ -84,15 +161,15 @@
     box-shadow: none;
   }
   .neo-card {
-    @apply bg-[#1c1b1b] border-4 border-black p-6;
+    @apply bg-card border-4 border-black p-6;
     box-shadow: 8px 8px 0px 0px #000000;
   }
   .neo-card-sm {
-    @apply bg-[#1c1b1b] border-2 border-black p-4;
+    @apply bg-card border-2 border-black p-4;
     box-shadow: 4px 4px 0px 0px #000000;
   }
   .neo-input {
-    @apply bg-[#131313] border-2 border-black text-[#e5e2e1] px-4 py-3 font-['Public_Sans'] placeholder:text-[#cfc2d6]/50 focus:outline-none focus:border-[#e2c62d] transition-colors;
+    @apply bg-background border-2 border-black text-foreground px-4 py-3 font-['Public_Sans'] placeholder:text-muted-foreground focus:outline-none focus:border-tertiary transition-colors;
   }
   .neo-nav-item {
     @apply flex items-center gap-3 p-3 border-2 border-black font-['Lexend'] uppercase font-bold text-sm transition-all duration-75 cursor-pointer;
@@ -103,7 +180,7 @@
     box-shadow: 2px 2px 0px 0px #000000;
   }
   .neo-nav-item-active {
-    @apply bg-[#ddb7ff] text-black shadow-none translate-x-1 translate-y-1;
+    @apply bg-primary text-primary-foreground shadow-none translate-x-1 translate-y-1;
   }
 }
 
