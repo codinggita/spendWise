@@ -4,19 +4,19 @@ A modern financial transaction management application for Indian users — track
 
 ---
 
-## Design
+## Design & Documentation
 
-🎨 **View the Figma Design**: [SpendWise UI/UX Design](https://www.figma.com/design/xfkvF45PRX2rzIEUrrT7bC/Spendwise?node-id=0-1&t=gBMgPX4ixG5aSHdj-0)
-
-📚 **View the API Documentation**: [SpendWise Postman Docs](https://documenter.getpostman.com/view/50840641/2sBXqKof1J)
-
-The complete UI/UX design system including all major screens, components, and user flows.
+| Resource | Link | Description |
+|----------|------|-------------|
+| 🎨 **Figma Design** | [View Design](https://www.figma.com/design/xfkvF45PRX2rzIEUrrT7bC/Spendwise?node-id=0-1&t=gBMgPX4ixG5aSHdj-0) | Complete UI/UX design system with all screens and components |
+| 📚 **API Docs** | [View Documentation](https://documenter.getpostman.com/view/50840641/2sBXqKof1J) | Postman API documentation with endpoints and examples |
+| 🎥 **Demo Video** | [Watch on YouTube](https://www.youtube.com/watch?v=mqEuDUiEuwU) | Walkthrough of SpendWise features and functionality |
 
 ---
 
 ## Table of Contents
 
-- [Design](#design)
+- [Design & Documentation](#design--documentation)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
